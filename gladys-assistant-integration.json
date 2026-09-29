@@ -1,0 +1,289 @@
+{
+  "manifest_version": 1,
+  "type": "device",
+  "name": "Programme Télé",
+  "description": {
+    "en": "French TV guide (TNT): what is on now, next and tonight on your favourite channels.",
+    "fr": "Programme TV (TNT) : ce qui passe maintenant, ensuite et ce soir sur vos chaînes préférées."
+  },
+  "version": "1.0.0",
+  "docker_image": "ghcr.io/prohand/gladys-programmetele:1.0.0",
+  "gladys_version": ">=4.86.0",
+  "cover_image": "https://raw.githubusercontent.com/prohand/gladys-programmetele/main/cover.png",
+  "categories": ["multimedia"],
+  "config_schema": [
+    {
+      "key": "intro",
+      "type": "section",
+      "label": {
+        "en": "Getting started",
+        "fr": "Pour commencer"
+      },
+      "description": {
+        "en": "Pick the channels to follow: each one becomes a device with 3 sensors (now, next, tonight). The guide comes from the free XMLTV feed of xmltvfr.fr. No account, no API key.",
+        "fr": "Choisissez les chaînes à suivre : chacune devient un appareil avec 3 capteurs (en cours, à suivre, ce soir). Le programme vient du flux XMLTV gratuit de xmltvfr.fr. Pas de compte, pas de clé d'API."
+      },
+      "links": [
+        {
+          "url": "https://xmltvfr.fr",
+          "label": {
+            "en": "XMLTV source (xmltvfr.fr)",
+            "fr": "Source XMLTV (xmltvfr.fr)"
+          }
+        }
+      ]
+    },
+    {
+      "key": "channels",
+      "type": "multi_select",
+      "label": {
+        "en": "Channels",
+        "fr": "Chaînes"
+      },
+      "description": {
+        "en": "One Gladys device is created per selected channel.",
+        "fr": "Un appareil Gladys est créé par chaîne cochée."
+      },
+      "required": true,
+      "default": ["TF1.fr", "France2.fr", "France3.fr", "France5.fr", "M6.fr", "Arte.fr"],
+      "options": [
+        {
+          "value": "TF1.fr",
+          "label": {
+            "en": "TF1",
+            "fr": "TF1"
+          }
+        },
+        {
+          "value": "France2.fr",
+          "label": {
+            "en": "France 2",
+            "fr": "France 2"
+          }
+        },
+        {
+          "value": "France3.fr",
+          "label": {
+            "en": "France 3",
+            "fr": "France 3"
+          }
+        },
+        {
+          "value": "CanalPlus.fr",
+          "label": {
+            "en": "Canal+",
+            "fr": "Canal+"
+          }
+        },
+        {
+          "value": "France5.fr",
+          "label": {
+            "en": "France 5",
+            "fr": "France 5"
+          }
+        },
+        {
+          "value": "M6.fr",
+          "label": {
+            "en": "M6",
+            "fr": "M6"
+          }
+        },
+        {
+          "value": "Arte.fr",
+          "label": {
+            "en": "Arte",
+            "fr": "Arte"
+          }
+        },
+        {
+          "value": "W9.fr",
+          "label": {
+            "en": "W9",
+            "fr": "W9"
+          }
+        },
+        {
+          "value": "TMC.fr",
+          "label": {
+            "en": "TMC",
+            "fr": "TMC"
+          }
+        },
+        {
+          "value": "NT1.fr",
+          "label": {
+            "en": "TFX",
+            "fr": "TFX"
+          }
+        },
+        {
+          "value": "LaChaineParlementaire.fr",
+          "label": {
+            "en": "LCP",
+            "fr": "LCP"
+          }
+        },
+        {
+          "value": "France4.fr",
+          "label": {
+            "en": "France 4",
+            "fr": "France 4"
+          }
+        },
+        {
+          "value": "BFMTV.fr",
+          "label": {
+            "en": "BFM TV",
+            "fr": "BFM TV"
+          }
+        },
+        {
+          "value": "CNews.fr",
+          "label": {
+            "en": "CNews",
+            "fr": "CNews"
+          }
+        },
+        {
+          "value": "CStar.fr",
+          "label": {
+            "en": "CStar",
+            "fr": "CStar"
+          }
+        },
+        {
+          "value": "Gulli.fr",
+          "label": {
+            "en": "Gulli",
+            "fr": "Gulli"
+          }
+        },
+        {
+          "value": "T18.fr",
+          "label": {
+            "en": "T18",
+            "fr": "T18"
+          }
+        },
+        {
+          "value": "NOVO19.fr",
+          "label": {
+            "en": "NOVO19",
+            "fr": "NOVO19"
+          }
+        },
+        {
+          "value": "TF1SeriesFilms.fr",
+          "label": {
+            "en": "TF1 Séries Films",
+            "fr": "TF1 Séries Films"
+          }
+        },
+        {
+          "value": "LEquipe21.fr",
+          "label": {
+            "en": "L'Équipe",
+            "fr": "L'Équipe"
+          }
+        },
+        {
+          "value": "6ter.fr",
+          "label": {
+            "en": "6ter",
+            "fr": "6ter"
+          }
+        },
+        {
+          "value": "Numero23.fr",
+          "label": {
+            "en": "RMC Story",
+            "fr": "RMC Story"
+          }
+        },
+        {
+          "value": "RMCDecouverte.fr",
+          "label": {
+            "en": "RMC Découverte",
+            "fr": "RMC Découverte"
+          }
+        },
+        {
+          "value": "Cherie25.fr",
+          "label": {
+            "en": "RMC Life",
+            "fr": "RMC Life"
+          }
+        },
+        {
+          "value": "LCI.fr",
+          "label": {
+            "en": "LCI",
+            "fr": "LCI"
+          }
+        },
+        {
+          "value": "FranceInfo.fr",
+          "label": {
+            "en": "franceinfo:",
+            "fr": "franceinfo:"
+          }
+        },
+        {
+          "value": "ParisPremiere.fr",
+          "label": {
+            "en": "Paris Première",
+            "fr": "Paris Première"
+          }
+        },
+        {
+          "value": "CanalPlusSport.fr",
+          "label": {
+            "en": "Canal+ Sport",
+            "fr": "Canal+ Sport"
+          }
+        },
+        {
+          "value": "CanalPlusCinema.fr",
+          "label": {
+            "en": "Canal+ Cinéma",
+            "fr": "Canal+ Cinéma"
+          }
+        },
+        {
+          "value": "PlanetePlus.fr",
+          "label": {
+            "en": "Planète+",
+            "fr": "Planète+"
+          }
+        }
+      ]
+    },
+    {
+      "key": "poll_frequency",
+      "type": "number",
+      "label": {
+        "en": "Refresh interval (s)",
+        "fr": "Intervalle de rafraîchissement (s)"
+      },
+      "description": {
+        "en": "How often the now / next / tonight sensors are refreshed, in seconds. The guide itself is only downloaded every 6 hours.",
+        "fr": "Fréquence de mise à jour des capteurs en cours / à suivre / ce soir, en secondes. Le programme lui-même n'est téléchargé que toutes les 6 heures."
+      },
+      "required": false,
+      "default": 300,
+      "min": 60,
+      "max": 3600
+    }
+  ],
+  "actions": [
+    {
+      "key": "test_guide",
+      "label": {
+        "en": "Test the TV guide",
+        "fr": "Tester le programme TV"
+      },
+      "timeout_seconds": 90
+    }
+  ]
+}

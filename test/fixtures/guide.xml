@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tv>
+  <channel id="TF1.fr">
+    <display-name>TF1</display-name>
+  </channel>
+  <programme start="20260929194500 +0200" stop="20260929201000 +0200" channel="TF1.fr">
+    <title lang="fr">Journal de 20H</title>
+    <category lang="fr">Information</category>
+  </programme>
+  <programme start="20260929201000 +0200" stop="20260929211000 +0200" channel="TF1.fr">
+    <title lang="fr">Quotidien &amp; Cie</title>
+    <sub-title lang="fr">L&apos;invit&#233; du soir</sub-title>
+  </programme>
+  <programme start="20260929211000 +0200" stop="20260929230000 +0200" channel="TF1.fr">
+    <title lang="fr">Grand film</title>
+  </programme>
+  <programme start="20260929230000 +0200" stop="20260930003000 +0200" channel="TF1.fr">
+    <title lang="fr">Magazine</title>
+  </programme>
+  <programme start="20260929200000 +0200" stop="20260929210000 +0200" channel="M6.fr">
+    <title lang="fr">Météo</title>
+  </programme>
+  <programme start="20260929200000 +0200" stop="20260929210000 +0200" channel="Broken.fr">
+  </programme>
+</tv>
