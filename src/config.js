@@ -12,12 +12,12 @@
 
 import { findChannel } from './channels.js';
 
-// Refresh intervals offered to the user, in MILLISECONDS. Gladys only accepts
-// a few values for a device `poll_frequency` (DEVICE_POLL_FREQUENCIES of the
-// core: 1 s, 2 s, 10 s, 15 s, 30 s, 1 min) and rejects the whole discovery
-// otherwise. 1 min is the slowest; faster is useless for a TV guide below 10 s.
-// Same values as the `poll_frequency` options of the manifest.
-export const POLL_FREQUENCIES = [60_000, 30_000, 15_000, 10_000];
+// Refresh interval of the sensors, in MILLISECONDS. Gladys only accepts a few
+// values for a device `poll_frequency` (DEVICE_POLL_FREQUENCIES of the core:
+// 1 s, 2 s, 10 s, 15 s, 30 s, 1 min) and rejects the whole discovery otherwise.
+// 1 min is the slowest, and faster is useless for a TV guide: it is fixed and
+// not offered in the config.
+export const POLL_FREQUENCY = 60_000;
 
 // Defaults: they MUST stay consistent with the `default` values declared in the
 // `config_schema` of the manifest.
@@ -25,7 +25,7 @@ export const DEFAULT_CONFIG = {
   // XMLTV ids of the channels to follow (one Gladys device per channel).
   channels: ['TF1.fr', 'France2.fr', 'France3.fr', 'France5.fr', 'M6.fr', 'Arte.fr'],
   // Milliseconds between two refreshes of the "now / next / tonight" sensors.
-  poll_frequency: 60_000,
+  poll_frequency: POLL_FREQUENCY,
 };
 
 /**
@@ -37,7 +37,8 @@ export function normalizeConfig(raw = {}) {
     ...DEFAULT_CONFIG,
     ...raw,
     channels: normalizeChannels(raw.channels),
-    poll_frequency: normalizePollFrequency(raw.poll_frequency),
+    // Not configurable: ignore any value saved by an older version.
+    poll_frequency: POLL_FREQUENCY,
   };
 }
 
@@ -50,18 +51,4 @@ function normalizeChannels(value) {
   const list = Array.isArray(value) ? value : String(value).split(',');
   const ids = list.map((id) => String(id).trim()).filter((id) => findChannel(id));
   return [...new Set(ids)];
-}
-
-// The select stores a string: force a number. A value given in seconds
-// (e.g. 30) is converted; anything Gladys would refuse (e.g. 300 saved by the
-// first version) falls back to the default.
-function normalizePollFrequency(value) {
-  const number = Number(value ?? DEFAULT_CONFIG.poll_frequency);
-  if (POLL_FREQUENCIES.includes(number)) {
-    return number;
-  }
-  if (POLL_FREQUENCIES.includes(number * 1000)) {
-    return number * 1000;
-  }
-  return DEFAULT_CONFIG.poll_frequency;
 }

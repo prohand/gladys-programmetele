@@ -27,13 +27,13 @@ function mockGuideDownload() {
   globalThis.fetch = async () => ({ ok: true, arrayBuffer: async () => Buffer.from(xml) });
 }
 
-test('one device per selected channel, with the configured poll_frequency', () => {
+test('one device per selected channel, polled every minute', () => {
   const gladys = createFakeGladys();
   const devices = buildDiscoveredDevices(gladys, normalizeConfig({ poll_frequency: '30000' }));
   assert.equal(devices.length, config.channels.length);
   for (const device of devices) {
     assert.match(device.name, /^Programme TV /);
-    assert.equal(device.poll_frequency, 30_000);
+    assert.equal(device.poll_frequency, 60_000);
     assert.equal(device.features.length, 3);
   }
 });

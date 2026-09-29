@@ -39,15 +39,14 @@ enregistrées dans les scènes des utilisateurs : ne jamais les renommer.
 
 ## Configuration (manifest)
 
-> `poll_frequency` est en **millisecondes** et Gladys n'accepte que 1 s, 2 s,
-> 10 s, 15 s, 30 s ou 1 min (`DEVICE_POLL_FREQUENCIES` du cœur). Toute autre
-> valeur fait refuser la découverte (`invalid poll frequency`). D'où un champ
-> `select` et non un nombre libre.
+> `poll_frequency` n'est pas réglable : fixé à 1 min (`POLL_FREQUENCY` dans
+> `src/config.js`). Gladys n'accepte que 1 s, 2 s, 10 s, 15 s, 30 s ou 1 min
+> (`DEVICE_POLL_FREQUENCIES` du cœur) ; 1 min est le plus lent, et plus rapide
+> ne sert à rien pour un programme TV.
 
-| Clé              | Type           | Défaut                                      | Rôle                                  |
-| ---------------- | -------------- | ------------------------------------------- | ------------------------------------- |
-| `channels`       | `multi_select` | TF1, France 2, France 3, France 5, M6, Arte | Chaînes suivies (1 appareil / chaîne) |
-| `poll_frequency` | `select`       | `60000` (1 min) ; aussi 30 s, 15 s, 10 s    | Intervalle de rafraîchissement (ms)   |
+| Clé        | Type           | Défaut                                      | Rôle                                  |
+| ---------- | -------------- | ------------------------------------------- | ------------------------------------- |
+| `channels` | `multi_select` | TF1, France 2, France 3, France 5, M6, Arte | Chaînes suivies (1 appareil / chaîne) |
 
 Action : `test_guide` (« Tester le programme TV »).
 
