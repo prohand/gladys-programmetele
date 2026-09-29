@@ -54,7 +54,7 @@ gladys.onScanRequest(async () => {
 });
 
 // --- Polling: Gladys asks to refresh a device --------------------------------
-// Called every `poll_frequency` seconds for each created channel device.
+// Called every `poll_frequency` milliseconds for each created channel device.
 gladys.onPoll(async (device) => {
   const channel = findChannelByDevice(gladys, device);
   if (!channel) {

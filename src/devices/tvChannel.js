@@ -4,7 +4,7 @@
 //   - "En cours"  : the programme on air now;
 //   - "À suivre"  : the next programme;
 //   - "Ce soir"   : tonight's programme (on air at 21:10, French time).
-// Values are refreshed by polling, every `poll_frequency` seconds.
+// Values are refreshed by polling, every `poll_frequency` milliseconds.
 // -----------------------------------------------------------------------------
 
 import {
@@ -58,7 +58,8 @@ export const tvChannel = {
     return {
       name: `Programme TV ${channel.name}`,
       external_id: ids.device,
-      // Gladys will call onPoll at this interval (in seconds).
+      // Gladys will call onPoll at this interval (in MILLISECONDS, one of
+      // the values Gladys accepts, see POLL_FREQUENCIES in src/config.js).
       poll_frequency: config.poll_frequency,
       features: [
         textFeature(ids, FEATURE.CURRENT),

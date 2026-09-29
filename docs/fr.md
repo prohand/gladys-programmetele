@@ -21,9 +21,10 @@ Les horaires sont toujours affichés à l'heure de Paris.
 
 1. Ouvrez l'onglet **Configuration** de l'intégration.
 2. Cochez les **chaînes** à suivre (30 chaînes TNT disponibles).
-3. Réglez l'**intervalle de rafraîchissement** (`poll_frequency`, en
-   secondes, entre 60 et 3600, 300 par défaut) : c'est la fréquence de mise à
-   jour des capteurs.
+3. Choisissez l'**intervalle de rafraîchissement** (`poll_frequency`) : toutes
+   les minutes (conseillé, par défaut), 30, 15 ou 10 secondes. C'est la
+   fréquence de mise à jour des capteurs. Gladys n'accepte pas d'intervalle
+   plus long qu'une minute.
 4. Enregistrez : les appareils apparaissent dans l'onglet **Découverte**,
    prêts à être ajoutés.
 

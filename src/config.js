@@ -12,17 +12,20 @@
 
 import { findChannel } from './channels.js';
 
-// Bounds of the refresh interval, same as the manifest `min` / `max`.
-export const POLL_FREQUENCY_MIN = 60;
-export const POLL_FREQUENCY_MAX = 3600;
+// Refresh intervals offered to the user, in MILLISECONDS. Gladys only accepts
+// a few values for a device `poll_frequency` (DEVICE_POLL_FREQUENCIES of the
+// core: 1 s, 2 s, 10 s, 15 s, 30 s, 1 min) and rejects the whole discovery
+// otherwise. 1 min is the slowest; faster is useless for a TV guide below 10 s.
+// Same values as the `poll_frequency` options of the manifest.
+export const POLL_FREQUENCIES = [60_000, 30_000, 15_000, 10_000];
 
 // Defaults: they MUST stay consistent with the `default` values declared in the
 // `config_schema` of the manifest.
 export const DEFAULT_CONFIG = {
   // XMLTV ids of the channels to follow (one Gladys device per channel).
   channels: ['TF1.fr', 'France2.fr', 'France3.fr', 'France5.fr', 'M6.fr', 'Arte.fr'],
-  // Seconds between two refreshes of the "now / next / tonight" sensors.
-  poll_frequency: 300,
+  // Milliseconds between two refreshes of the "now / next / tonight" sensors.
+  poll_frequency: 60_000,
 };
 
 /**
@@ -49,12 +52,16 @@ function normalizeChannels(value) {
   return [...new Set(ids)];
 }
 
-// Config may arrive as a string from a form: force a number, fall back to the
-// default when it is not a number, and keep it inside the manifest bounds.
+// The select stores a string: force a number. A value given in seconds
+// (e.g. 30) is converted; anything Gladys would refuse (e.g. 300 saved by the
+// first version) falls back to the default.
 function normalizePollFrequency(value) {
-  const seconds = Number(value ?? DEFAULT_CONFIG.poll_frequency);
-  if (!Number.isFinite(seconds)) {
-    return DEFAULT_CONFIG.poll_frequency;
+  const number = Number(value ?? DEFAULT_CONFIG.poll_frequency);
+  if (POLL_FREQUENCIES.includes(number)) {
+    return number;
   }
-  return Math.min(POLL_FREQUENCY_MAX, Math.max(POLL_FREQUENCY_MIN, Math.round(seconds)));
+  if (POLL_FREQUENCIES.includes(number * 1000)) {
+    return number * 1000;
+  }
+  return DEFAULT_CONFIG.poll_frequency;
 }

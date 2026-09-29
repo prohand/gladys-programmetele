@@ -29,11 +29,11 @@ function mockGuideDownload() {
 
 test('one device per selected channel, with the configured poll_frequency', () => {
   const gladys = createFakeGladys();
-  const devices = buildDiscoveredDevices(gladys, normalizeConfig({ poll_frequency: 120 }));
+  const devices = buildDiscoveredDevices(gladys, normalizeConfig({ poll_frequency: '30000' }));
   assert.equal(devices.length, config.channels.length);
   for (const device of devices) {
     assert.match(device.name, /^Programme TV /);
-    assert.equal(device.poll_frequency, 120);
+    assert.equal(device.poll_frequency, 30_000);
     assert.equal(device.features.length, 3);
   }
 });
