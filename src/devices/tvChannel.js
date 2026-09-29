@@ -58,8 +58,8 @@ export const tvChannel = {
     return {
       name: `Programme TV ${channel.name}`,
       external_id: ids.device,
-      // Gladys will call onPoll at this interval (in MILLISECONDS, one of
-      // the values Gladys accepts, see POLL_FREQUENCIES in src/config.js).
+      // Gladys will call onPoll at this interval (in MILLISECONDS, see
+      // POLL_FREQUENCY in src/config.js).
       poll_frequency: config.poll_frequency,
       features: [
         textFeature(ids, FEATURE.CURRENT),

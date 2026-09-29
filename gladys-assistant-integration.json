@@ -258,50 +258,6 @@
           }
         }
       ]
-    },
-    {
-      "key": "poll_frequency",
-      "type": "select",
-      "label": {
-        "en": "Refresh interval",
-        "fr": "Intervalle de rafraîchissement"
-      },
-      "description": {
-        "en": "How often the now / next / tonight sensors are refreshed. The guide itself is only downloaded every 6 hours.",
-        "fr": "Fréquence de mise à jour des capteurs en cours / à suivre / ce soir. Le programme lui-même n'est téléchargé que toutes les 6 heures."
-      },
-      "required": false,
-      "default": "60000",
-      "options": [
-        {
-          "value": "60000",
-          "label": {
-            "en": "Every minute (recommended)",
-            "fr": "Toutes les minutes (conseillé)"
-          }
-        },
-        {
-          "value": "30000",
-          "label": {
-            "en": "Every 30 seconds",
-            "fr": "Toutes les 30 secondes"
-          }
-        },
-        {
-          "value": "15000",
-          "label": {
-            "en": "Every 15 seconds",
-            "fr": "Toutes les 15 secondes"
-          }
-        },
-        {
-          "value": "10000",
-          "label": {
-            "en": "Every 10 seconds",
-            "fr": "Toutes les 10 secondes"
-          }
-        }
-      ]
     }
   ],
   "actions": [
