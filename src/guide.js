@@ -84,7 +84,7 @@ function readAttribute(attributes, name) {
 /**
  * Read an XMLTV document.
  * @param {string} xml
- * @returns {Map<string, Array<{ title: string, subTitle?: string, category?: string, start: Date, stop: Date }>>}
+ * @returns {Map<string, Array<{ title: string, subTitle?: string, description?: string, category?: string, start: Date, stop: Date }>>}
  *   the programmes of each channel id, sorted by start time.
  */
 export function parseXmltv(xml) {
@@ -104,6 +104,7 @@ export function parseXmltv(xml) {
     programmes.get(channel).push({
       title,
       subTitle: readTag(body, 'sub-title'),
+      description: readTag(body, 'desc'),
       category: readTag(body, 'category'),
       start,
       stop,
@@ -253,7 +254,7 @@ function truncate(text) {
   return text.length > MAX_TEXT_LENGTH ? `${text.slice(0, MAX_TEXT_LENGTH - 1)}…` : text;
 }
 
-function fullTitle(programme) {
+export function fullTitle(programme) {
   return programme.subTitle ? `${programme.title} - ${programme.subTitle}` : programme.title;
 }
 
@@ -275,4 +276,23 @@ export function formatUpcoming(programme) {
     return NO_PROGRAMME;
   }
   return truncate(`${formatTime(programme.start)} · ${fullTitle(programme)}`);
+}
+
+/**
+ * Programmes that started in the time window ]from, to], on every channel.
+ * @param {Map} guide result of getGuide()
+ * @param {Date} from excluded
+ * @param {Date} to included
+ * @returns {Array<{ channelId: string, programme: object }>} sorted by start time
+ */
+export function findStartedProgrammes(guide, from, to) {
+  const started = [];
+  for (const [channelId, list] of guide) {
+    for (const programme of list) {
+      if (programme.start > from && programme.start <= to) {
+        started.push({ channelId, programme });
+      }
+    }
+  }
+  return started.sort((a, b) => a.programme.start - b.programme.start);
 }

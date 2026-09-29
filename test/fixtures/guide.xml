@@ -13,6 +13,8 @@
   </programme>
   <programme start="20260929211000 +0200" stop="20260929230000 +0200" channel="TF1.fr">
     <title lang="fr">Grand film</title>
+    <desc lang="fr">Un film pour toute la famille.</desc>
+    <category lang="fr">Film</category>
   </programme>
   <programme start="20260929230000 +0200" stop="20260930003000 +0200" channel="TF1.fr">
     <title lang="fr">Magazine</title>

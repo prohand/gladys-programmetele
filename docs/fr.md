@@ -31,6 +31,39 @@ Le programme complet (8 jours) est téléchargé au plus toutes les 6 heures,
 quelle que soit la fréquence de rafraîchissement : un intervalle court ne
 charge pas le serveur de la source.
 
+## Widget du tableau de bord
+
+Ajoutez le widget **Programme TV** à un tableau de bord (Gladys 5.1 ou plus).
+Réglages :
+
+- **Afficher** : _En ce moment_ (avec le temps restant) ou _Ce soir (21h10)_ ;
+- **Chaînes** : 8 chaînes maximum ; laissez vide pour reprendre les chaînes de
+  la configuration de l'intégration.
+
+Touchez une ligne pour lire le résumé du programme. Le widget se met à jour
+tout seul quand un programme se termine.
+
+## Scènes
+
+**Déclencheur « Un programme TV commence »** — lance une scène au début d'un
+programme. Filtres (vides = tout) :
+
+- **Chaînes** : une ou plusieurs chaînes ;
+- **Titre exact** : par exemple `Koh-Lanta` (titre exact, majuscules
+  comprises ; « contient » n'est pas possible).
+
+Variables utilisables dans les actions suivantes : chaîne, titre,
+sous-titre, catégorie, heure de début, heure de fin, durée (min). Exemple :
+« Quand Koh-Lanta commence sur TF1, allumer la TV et m'envoyer un message ».
+
+Le déclencheur fonctionne pour les 30 chaînes, même celles qui ne sont pas
+cochées dans la configuration. Un programme est détecté dans la minute qui
+suit son début.
+
+**Action « Lire le programme TV d'une chaîne »** — renvoie à la scène le
+programme en cours, à suivre et de ce soir (texte complet, titre seul, heure).
+Exemple : envoyer chaque soir à 20h « Ce soir sur France 2 : … ».
+
 ## Actions
 
 - **Tester le programme TV** — télécharge le programme tout de suite et

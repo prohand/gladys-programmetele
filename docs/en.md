@@ -27,6 +27,37 @@ Times are always displayed in the Paris time zone.
 The full guide (8 days) is downloaded at most every 6 hours, whatever the
 refresh interval: a short interval does not load the source server.
 
+## Dashboard widget
+
+Add the **TV guide** widget to a dashboard (Gladys 5.1 or later). Settings:
+
+- **Show**: _Now_ (with the time left) or _Tonight (21:10)_;
+- **Channels**: up to 8 channels; leave empty to use the channels of the
+  integration configuration.
+
+Tap a row to read the programme summary. The widget refreshes itself when a
+programme ends.
+
+## Scenes
+
+**Trigger "A TV programme starts"** — starts a scene when a programme
+begins. Filters (empty = any):
+
+- **Channels**: one or more channels;
+- **Exact title**: e.g. `Koh-Lanta` (exact match, case included; "contains"
+  is not possible).
+
+Variables for the following actions: channel, title, sub-title, category,
+start time, end time, duration (min). Example: "When Koh-Lanta starts on
+TF1, turn on the TV and send me a message".
+
+The trigger works for all 30 channels, even the ones not ticked in the
+configuration. A programme is detected within a minute of its start.
+
+**Action "Get the TV programme of a channel"** — returns to the scene what
+is on now, next and tonight (full text, title only, time). Example: send
+every evening at 20:00 "Tonight on France 2: …".
+
 ## Actions
 
 - **Test the TV guide** — downloads the guide right now and shows what is on

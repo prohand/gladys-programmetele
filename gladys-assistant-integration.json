@@ -8,7 +8,7 @@
   },
   "version": "1.0.0",
   "docker_image": "ghcr.io/prohand/gladys-programmetele:1.0.0",
-  "gladys_version": ">=4.86.0",
+  "gladys_version": ">=5.1.0",
   "cover_image": "https://raw.githubusercontent.com/prohand/gladys-programmetele/main/cover.png",
   "categories": ["multimedia"],
   "config_schema": [
@@ -284,6 +284,892 @@
         "fr": "Tester le programme TV"
       },
       "timeout_seconds": 90
+    }
+  ],
+  "widgets": [
+    {
+      "key": "tv_guide",
+      "label": {
+        "en": "TV guide",
+        "fr": "Programme TV"
+      },
+      "description": {
+        "en": "What is on now or tonight on your channels.",
+        "fr": "Ce qui passe maintenant ou ce soir sur vos chaînes."
+      },
+      "icon": "tv",
+      "settings": [
+        {
+          "key": "moment",
+          "type": "select",
+          "display": "radio",
+          "label": {
+            "en": "Show",
+            "fr": "Afficher"
+          },
+          "default": "now",
+          "options": [
+            {
+              "value": "now",
+              "label": {
+                "en": "Now",
+                "fr": "En ce moment"
+              }
+            },
+            {
+              "value": "tonight",
+              "label": {
+                "en": "Tonight (21:10)",
+                "fr": "Ce soir (21h10)"
+              }
+            }
+          ]
+        },
+        {
+          "key": "channels",
+          "type": "multi_select",
+          "label": {
+            "en": "Channels",
+            "fr": "Chaînes"
+          },
+          "description": {
+            "en": "Up to 8 channels. Empty: the channels of the integration configuration.",
+            "fr": "8 chaînes maximum. Vide : les chaînes de la configuration de l'intégration."
+          },
+          "options": [
+            {
+              "value": "TF1.fr",
+              "label": {
+                "en": "TF1",
+                "fr": "TF1"
+              }
+            },
+            {
+              "value": "France2.fr",
+              "label": {
+                "en": "France 2",
+                "fr": "France 2"
+              }
+            },
+            {
+              "value": "France3.fr",
+              "label": {
+                "en": "France 3",
+                "fr": "France 3"
+              }
+            },
+            {
+              "value": "CanalPlus.fr",
+              "label": {
+                "en": "Canal+",
+                "fr": "Canal+"
+              }
+            },
+            {
+              "value": "France5.fr",
+              "label": {
+                "en": "France 5",
+                "fr": "France 5"
+              }
+            },
+            {
+              "value": "M6.fr",
+              "label": {
+                "en": "M6",
+                "fr": "M6"
+              }
+            },
+            {
+              "value": "Arte.fr",
+              "label": {
+                "en": "Arte",
+                "fr": "Arte"
+              }
+            },
+            {
+              "value": "W9.fr",
+              "label": {
+                "en": "W9",
+                "fr": "W9"
+              }
+            },
+            {
+              "value": "TMC.fr",
+              "label": {
+                "en": "TMC",
+                "fr": "TMC"
+              }
+            },
+            {
+              "value": "NT1.fr",
+              "label": {
+                "en": "TFX",
+                "fr": "TFX"
+              }
+            },
+            {
+              "value": "LaChaineParlementaire.fr",
+              "label": {
+                "en": "LCP",
+                "fr": "LCP"
+              }
+            },
+            {
+              "value": "France4.fr",
+              "label": {
+                "en": "France 4",
+                "fr": "France 4"
+              }
+            },
+            {
+              "value": "BFMTV.fr",
+              "label": {
+                "en": "BFM TV",
+                "fr": "BFM TV"
+              }
+            },
+            {
+              "value": "CNews.fr",
+              "label": {
+                "en": "CNews",
+                "fr": "CNews"
+              }
+            },
+            {
+              "value": "CStar.fr",
+              "label": {
+                "en": "CStar",
+                "fr": "CStar"
+              }
+            },
+            {
+              "value": "Gulli.fr",
+              "label": {
+                "en": "Gulli",
+                "fr": "Gulli"
+              }
+            },
+            {
+              "value": "T18.fr",
+              "label": {
+                "en": "T18",
+                "fr": "T18"
+              }
+            },
+            {
+              "value": "NOVO19.fr",
+              "label": {
+                "en": "NOVO19",
+                "fr": "NOVO19"
+              }
+            },
+            {
+              "value": "TF1SeriesFilms.fr",
+              "label": {
+                "en": "TF1 Séries Films",
+                "fr": "TF1 Séries Films"
+              }
+            },
+            {
+              "value": "LEquipe21.fr",
+              "label": {
+                "en": "L'Équipe",
+                "fr": "L'Équipe"
+              }
+            },
+            {
+              "value": "6ter.fr",
+              "label": {
+                "en": "6ter",
+                "fr": "6ter"
+              }
+            },
+            {
+              "value": "Numero23.fr",
+              "label": {
+                "en": "RMC Story",
+                "fr": "RMC Story"
+              }
+            },
+            {
+              "value": "RMCDecouverte.fr",
+              "label": {
+                "en": "RMC Découverte",
+                "fr": "RMC Découverte"
+              }
+            },
+            {
+              "value": "Cherie25.fr",
+              "label": {
+                "en": "RMC Life",
+                "fr": "RMC Life"
+              }
+            },
+            {
+              "value": "LCI.fr",
+              "label": {
+                "en": "LCI",
+                "fr": "LCI"
+              }
+            },
+            {
+              "value": "FranceInfo.fr",
+              "label": {
+                "en": "franceinfo:",
+                "fr": "franceinfo:"
+              }
+            },
+            {
+              "value": "ParisPremiere.fr",
+              "label": {
+                "en": "Paris Première",
+                "fr": "Paris Première"
+              }
+            },
+            {
+              "value": "CanalPlusSport.fr",
+              "label": {
+                "en": "Canal+ Sport",
+                "fr": "Canal+ Sport"
+              }
+            },
+            {
+              "value": "CanalPlusCinema.fr",
+              "label": {
+                "en": "Canal+ Cinéma",
+                "fr": "Canal+ Cinéma"
+              }
+            },
+            {
+              "value": "PlanetePlus.fr",
+              "label": {
+                "en": "Planète+",
+                "fr": "Planète+"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "scene_triggers": [
+    {
+      "key": "programme_started",
+      "label": {
+        "en": "A TV programme starts",
+        "fr": "Un programme TV commence"
+      },
+      "description": {
+        "en": "Fired when a programme starts on a TNT channel.",
+        "fr": "Déclenché quand un programme commence sur une chaîne TNT."
+      },
+      "fields": [
+        {
+          "key": "channel",
+          "type": "multi_select",
+          "label": {
+            "en": "Channels",
+            "fr": "Chaînes"
+          },
+          "description": {
+            "en": "Empty: any channel.",
+            "fr": "Vide : n'importe quelle chaîne."
+          },
+          "options": [
+            {
+              "value": "TF1.fr",
+              "label": {
+                "en": "TF1",
+                "fr": "TF1"
+              }
+            },
+            {
+              "value": "France2.fr",
+              "label": {
+                "en": "France 2",
+                "fr": "France 2"
+              }
+            },
+            {
+              "value": "France3.fr",
+              "label": {
+                "en": "France 3",
+                "fr": "France 3"
+              }
+            },
+            {
+              "value": "CanalPlus.fr",
+              "label": {
+                "en": "Canal+",
+                "fr": "Canal+"
+              }
+            },
+            {
+              "value": "France5.fr",
+              "label": {
+                "en": "France 5",
+                "fr": "France 5"
+              }
+            },
+            {
+              "value": "M6.fr",
+              "label": {
+                "en": "M6",
+                "fr": "M6"
+              }
+            },
+            {
+              "value": "Arte.fr",
+              "label": {
+                "en": "Arte",
+                "fr": "Arte"
+              }
+            },
+            {
+              "value": "W9.fr",
+              "label": {
+                "en": "W9",
+                "fr": "W9"
+              }
+            },
+            {
+              "value": "TMC.fr",
+              "label": {
+                "en": "TMC",
+                "fr": "TMC"
+              }
+            },
+            {
+              "value": "NT1.fr",
+              "label": {
+                "en": "TFX",
+                "fr": "TFX"
+              }
+            },
+            {
+              "value": "LaChaineParlementaire.fr",
+              "label": {
+                "en": "LCP",
+                "fr": "LCP"
+              }
+            },
+            {
+              "value": "France4.fr",
+              "label": {
+                "en": "France 4",
+                "fr": "France 4"
+              }
+            },
+            {
+              "value": "BFMTV.fr",
+              "label": {
+                "en": "BFM TV",
+                "fr": "BFM TV"
+              }
+            },
+            {
+              "value": "CNews.fr",
+              "label": {
+                "en": "CNews",
+                "fr": "CNews"
+              }
+            },
+            {
+              "value": "CStar.fr",
+              "label": {
+                "en": "CStar",
+                "fr": "CStar"
+              }
+            },
+            {
+              "value": "Gulli.fr",
+              "label": {
+                "en": "Gulli",
+                "fr": "Gulli"
+              }
+            },
+            {
+              "value": "T18.fr",
+              "label": {
+                "en": "T18",
+                "fr": "T18"
+              }
+            },
+            {
+              "value": "NOVO19.fr",
+              "label": {
+                "en": "NOVO19",
+                "fr": "NOVO19"
+              }
+            },
+            {
+              "value": "TF1SeriesFilms.fr",
+              "label": {
+                "en": "TF1 Séries Films",
+                "fr": "TF1 Séries Films"
+              }
+            },
+            {
+              "value": "LEquipe21.fr",
+              "label": {
+                "en": "L'Équipe",
+                "fr": "L'Équipe"
+              }
+            },
+            {
+              "value": "6ter.fr",
+              "label": {
+                "en": "6ter",
+                "fr": "6ter"
+              }
+            },
+            {
+              "value": "Numero23.fr",
+              "label": {
+                "en": "RMC Story",
+                "fr": "RMC Story"
+              }
+            },
+            {
+              "value": "RMCDecouverte.fr",
+              "label": {
+                "en": "RMC Découverte",
+                "fr": "RMC Découverte"
+              }
+            },
+            {
+              "value": "Cherie25.fr",
+              "label": {
+                "en": "RMC Life",
+                "fr": "RMC Life"
+              }
+            },
+            {
+              "value": "LCI.fr",
+              "label": {
+                "en": "LCI",
+                "fr": "LCI"
+              }
+            },
+            {
+              "value": "FranceInfo.fr",
+              "label": {
+                "en": "franceinfo:",
+                "fr": "franceinfo:"
+              }
+            },
+            {
+              "value": "ParisPremiere.fr",
+              "label": {
+                "en": "Paris Première",
+                "fr": "Paris Première"
+              }
+            },
+            {
+              "value": "CanalPlusSport.fr",
+              "label": {
+                "en": "Canal+ Sport",
+                "fr": "Canal+ Sport"
+              }
+            },
+            {
+              "value": "CanalPlusCinema.fr",
+              "label": {
+                "en": "Canal+ Cinéma",
+                "fr": "Canal+ Cinéma"
+              }
+            },
+            {
+              "value": "PlanetePlus.fr",
+              "label": {
+                "en": "Planète+",
+                "fr": "Planète+"
+              }
+            }
+          ]
+        },
+        {
+          "key": "title",
+          "type": "string",
+          "label": {
+            "en": "Exact title",
+            "fr": "Titre exact"
+          },
+          "description": {
+            "en": "Only this programme, e.g. Koh-Lanta (exact match, case included). Empty: any programme.",
+            "fr": "Seulement ce programme, ex. Koh-Lanta (titre exact, majuscules comprises). Vide : tous les programmes."
+          }
+        }
+      ],
+      "variables": [
+        {
+          "key": "channel_name",
+          "type": "string",
+          "label": {
+            "en": "Channel",
+            "fr": "Chaîne"
+          }
+        },
+        {
+          "key": "title",
+          "type": "string",
+          "label": {
+            "en": "Title",
+            "fr": "Titre"
+          }
+        },
+        {
+          "key": "sub_title",
+          "type": "string",
+          "label": {
+            "en": "Sub-title",
+            "fr": "Sous-titre"
+          }
+        },
+        {
+          "key": "category",
+          "type": "string",
+          "label": {
+            "en": "Category",
+            "fr": "Catégorie"
+          }
+        },
+        {
+          "key": "start",
+          "type": "string",
+          "label": {
+            "en": "Start time",
+            "fr": "Heure de début"
+          }
+        },
+        {
+          "key": "stop",
+          "type": "string",
+          "label": {
+            "en": "End time",
+            "fr": "Heure de fin"
+          }
+        },
+        {
+          "key": "duration_minutes",
+          "type": "number",
+          "label": {
+            "en": "Duration (min)",
+            "fr": "Durée (min)"
+          }
+        }
+      ]
+    }
+  ],
+  "scene_actions": [
+    {
+      "key": "get_programme",
+      "label": {
+        "en": "Get the TV programme of a channel",
+        "fr": "Lire le programme TV d'une chaîne"
+      },
+      "description": {
+        "en": "Returns what is on now, next and tonight.",
+        "fr": "Renvoie le programme en cours, à suivre et de ce soir."
+      },
+      "timeout_seconds": 90,
+      "fields": [
+        {
+          "key": "channel",
+          "type": "select",
+          "label": {
+            "en": "Channel",
+            "fr": "Chaîne"
+          },
+          "required": true,
+          "options": [
+            {
+              "value": "TF1.fr",
+              "label": {
+                "en": "TF1",
+                "fr": "TF1"
+              }
+            },
+            {
+              "value": "France2.fr",
+              "label": {
+                "en": "France 2",
+                "fr": "France 2"
+              }
+            },
+            {
+              "value": "France3.fr",
+              "label": {
+                "en": "France 3",
+                "fr": "France 3"
+              }
+            },
+            {
+              "value": "CanalPlus.fr",
+              "label": {
+                "en": "Canal+",
+                "fr": "Canal+"
+              }
+            },
+            {
+              "value": "France5.fr",
+              "label": {
+                "en": "France 5",
+                "fr": "France 5"
+              }
+            },
+            {
+              "value": "M6.fr",
+              "label": {
+                "en": "M6",
+                "fr": "M6"
+              }
+            },
+            {
+              "value": "Arte.fr",
+              "label": {
+                "en": "Arte",
+                "fr": "Arte"
+              }
+            },
+            {
+              "value": "W9.fr",
+              "label": {
+                "en": "W9",
+                "fr": "W9"
+              }
+            },
+            {
+              "value": "TMC.fr",
+              "label": {
+                "en": "TMC",
+                "fr": "TMC"
+              }
+            },
+            {
+              "value": "NT1.fr",
+              "label": {
+                "en": "TFX",
+                "fr": "TFX"
+              }
+            },
+            {
+              "value": "LaChaineParlementaire.fr",
+              "label": {
+                "en": "LCP",
+                "fr": "LCP"
+              }
+            },
+            {
+              "value": "France4.fr",
+              "label": {
+                "en": "France 4",
+                "fr": "France 4"
+              }
+            },
+            {
+              "value": "BFMTV.fr",
+              "label": {
+                "en": "BFM TV",
+                "fr": "BFM TV"
+              }
+            },
+            {
+              "value": "CNews.fr",
+              "label": {
+                "en": "CNews",
+                "fr": "CNews"
+              }
+            },
+            {
+              "value": "CStar.fr",
+              "label": {
+                "en": "CStar",
+                "fr": "CStar"
+              }
+            },
+            {
+              "value": "Gulli.fr",
+              "label": {
+                "en": "Gulli",
+                "fr": "Gulli"
+              }
+            },
+            {
+              "value": "T18.fr",
+              "label": {
+                "en": "T18",
+                "fr": "T18"
+              }
+            },
+            {
+              "value": "NOVO19.fr",
+              "label": {
+                "en": "NOVO19",
+                "fr": "NOVO19"
+              }
+            },
+            {
+              "value": "TF1SeriesFilms.fr",
+              "label": {
+                "en": "TF1 Séries Films",
+                "fr": "TF1 Séries Films"
+              }
+            },
+            {
+              "value": "LEquipe21.fr",
+              "label": {
+                "en": "L'Équipe",
+                "fr": "L'Équipe"
+              }
+            },
+            {
+              "value": "6ter.fr",
+              "label": {
+                "en": "6ter",
+                "fr": "6ter"
+              }
+            },
+            {
+              "value": "Numero23.fr",
+              "label": {
+                "en": "RMC Story",
+                "fr": "RMC Story"
+              }
+            },
+            {
+              "value": "RMCDecouverte.fr",
+              "label": {
+                "en": "RMC Découverte",
+                "fr": "RMC Découverte"
+              }
+            },
+            {
+              "value": "Cherie25.fr",
+              "label": {
+                "en": "RMC Life",
+                "fr": "RMC Life"
+              }
+            },
+            {
+              "value": "LCI.fr",
+              "label": {
+                "en": "LCI",
+                "fr": "LCI"
+              }
+            },
+            {
+              "value": "FranceInfo.fr",
+              "label": {
+                "en": "franceinfo:",
+                "fr": "franceinfo:"
+              }
+            },
+            {
+              "value": "ParisPremiere.fr",
+              "label": {
+                "en": "Paris Première",
+                "fr": "Paris Première"
+              }
+            },
+            {
+              "value": "CanalPlusSport.fr",
+              "label": {
+                "en": "Canal+ Sport",
+                "fr": "Canal+ Sport"
+              }
+            },
+            {
+              "value": "CanalPlusCinema.fr",
+              "label": {
+                "en": "Canal+ Cinéma",
+                "fr": "Canal+ Cinéma"
+              }
+            },
+            {
+              "value": "PlanetePlus.fr",
+              "label": {
+                "en": "Planète+",
+                "fr": "Planète+"
+              }
+            }
+          ]
+        }
+      ],
+      "outputs": [
+        {
+          "key": "channel_name",
+          "type": "string",
+          "label": {
+            "en": "Channel",
+            "fr": "Chaîne"
+          }
+        },
+        {
+          "key": "current",
+          "type": "string",
+          "label": {
+            "en": "Now (title and times)",
+            "fr": "En cours (titre et horaires)"
+          }
+        },
+        {
+          "key": "current_title",
+          "type": "string",
+          "label": {
+            "en": "Now: title",
+            "fr": "En cours : titre"
+          }
+        },
+        {
+          "key": "next",
+          "type": "string",
+          "label": {
+            "en": "Next (time and title)",
+            "fr": "À suivre (heure et titre)"
+          }
+        },
+        {
+          "key": "next_title",
+          "type": "string",
+          "label": {
+            "en": "Next: title",
+            "fr": "À suivre : titre"
+          }
+        },
+        {
+          "key": "next_start",
+          "type": "string",
+          "label": {
+            "en": "Next: start time",
+            "fr": "À suivre : heure"
+          }
+        },
+        {
+          "key": "tonight",
+          "type": "string",
+          "label": {
+            "en": "Tonight (time and title)",
+            "fr": "Ce soir (heure et titre)"
+          }
+        },
+        {
+          "key": "tonight_title",
+          "type": "string",
+          "label": {
+            "en": "Tonight: title",
+            "fr": "Ce soir : titre"
+          }
+        },
+        {
+          "key": "tonight_start",
+          "type": "string",
+          "label": {
+            "en": "Tonight: start time",
+            "fr": "Ce soir : heure"
+          }
+        }
+      ]
     }
   ]
 }

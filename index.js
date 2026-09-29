@@ -24,6 +24,8 @@ import {
   selectedChannels,
 } from './src/devices/index.js';
 import { tvChannel } from './src/devices/tvChannel.js';
+import { ACTION_GET_PROGRAMME, createProgrammeWatcher, getProgrammeAction } from './src/scenes.js';
+import { getTvGuideWidget, WIDGET_TV_GUIDE } from './src/widget.js';
 
 const gladys = new GladysIntegration();
 
@@ -32,6 +34,18 @@ let config = normalizeConfig();
 
 // Last connection status sent to Gladys (avoid sending the same one again).
 let lastStatus = null;
+
+// Fires the `programme_started` scene trigger every time a programme starts,
+// and asks the dashboard to re-pull the widget at that moment.
+const watcher = createProgrammeWatcher(gladys, {
+  onStarted: () => {
+    try {
+      gladys.requestWidgetRefresh(WIDGET_TV_GUIDE);
+    } catch (err) {
+      logger.debug('Widget refresh request failed', err);
+    }
+  },
+});
 
 // --- Discovery: Gladys asks for the list of devices --------------------------
 gladys.onScanRequest(async () => {
@@ -62,6 +76,14 @@ for (const [actionKey, handler] of Object.entries(ACTIONS)) {
   gladys.onAction(actionKey, (fields) => handler(gladys, { fields, config }));
 }
 
+// --- Dashboard widget: Gladys pulls the content to display -----------------
+gladys.onWidgetGet(WIDGET_TV_GUIDE, ({ settings, language }) =>
+  getTvGuideWidget({ settings, language }, config),
+);
+
+// --- Scene action: a scene asks for the programme of a channel --------------
+gladys.onSceneAction(ACTION_GET_PROGRAMME, (fields) => getProgrammeAction(fields));
+
 // --- Configuration updated by the user ---------------------------------------
 gladys.onConfigUpdated(async (newConfig) => {
   logger.info('onConfigUpdated -> new configuration received');
@@ -81,10 +103,15 @@ gladys.on('connected', async () => {
     // 2) (Re)publish all devices as soon as we are connected.
     await gladys.publishDiscoveredDevices(buildDiscoveredDevices(gladys, config));
 
-    // 3) Fill the sensors right away, without waiting for the first poll.
+    // 3) Watch the programme starts (scene trigger). Started before the
+    // guide download below, so a download failure does not stop it: the
+    // watcher retries on its own every minute.
+    watcher.start();
+
+    // 4) Fill the sensors right away, without waiting for the first poll.
     await refreshCreatedDevices();
 
-    // 4) Report the application-level status, shown in the Configuration
+    // 5) Report the application-level status, shown in the Configuration
     // screen.
     lastStatus = null;
     await reportStatus(true);
@@ -93,6 +120,10 @@ gladys.on('connected', async () => {
     lastStatus = null;
     await reportStatus(false);
   }
+});
+
+gladys.on('disconnected', () => {
+  watcher.stop();
 });
 
 // Publish the programmes of every channel device already created in Gladys.
@@ -133,6 +164,7 @@ async function reportStatus(connected) {
 // --- Graceful shutdown -------------------------------------------------------
 gladys.handleShutdown((signal) => {
   logger.info(`Received ${signal} -> graceful shutdown`);
+  watcher.stop();
 });
 
 // --- Startup -----------------------------------------------------------------

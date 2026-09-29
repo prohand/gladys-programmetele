@@ -19,6 +19,24 @@ et le SDK [`@gladysassistant/integration-sdk`](https://github.com/GladysAssistan
 - Horaires calculés et affichés à l'heure de Paris, quel que soit le fuseau
   du conteneur.
 
+## Widget et scènes (Gladys ≥ 5.1.0)
+
+- **Widget `tv_guide`** : liste `card-list` des programmes « en ce moment »
+  (temps restant) ou « ce soir », 8 chaînes max. `ttl_seconds` = fin du
+  premier programme affiché ; `requestWidgetRefresh` quand un programme
+  commence.
+- **Déclencheur `programme_started`** : une vérification par minute sur les
+  30 chaînes, un événement par programme qui commence (rattrapage limité à
+  5 min après une coupure). Filtres : `channel` (multi_select), `title`
+  (égalité exacte). Variables : `channel_name`, `title`, `sub_title`,
+  `category`, `start`, `stop`, `duration_minutes`.
+- **Action `get_programme`** : champ `channel`, sorties `current`,
+  `current_title`, `next`, `next_title`, `next_start`, `tonight`,
+  `tonight_title`, `tonight_start`, `channel_name`.
+
+Les clés (widget, déclencheur, action, champs, variables, sorties) sont
+enregistrées dans les scènes des utilisateurs : ne jamais les renommer.
+
 ## Configuration (manifest)
 
 | Clé              | Type           | Défaut                                      | Rôle                                  |
@@ -37,6 +55,8 @@ Action : `test_guide` (« Tester le programme TV »).
 │  ├─ channels.js                    # liste des 30 chaînes TNT (id XMLTV + nom)
 │  ├─ config.js                      # valeurs par défaut + nettoyage de la config
 │  ├─ guide.js                       # téléchargement, cache et lecture du XMLTV
+│  ├─ widget.js                      # widget tableau de bord "tv_guide"
+│  ├─ scenes.js                      # déclencheur + action de scène
 │  └─ devices/
 │     ├─ index.js                    # registre : 1 appareil par chaîne + actions
 │     └─ tvChannel.js                # appareil "chaîne TV" (3 capteurs texte)
