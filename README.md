@@ -13,7 +13,7 @@ et le SDK [`@gladysassistant/integration-sdk`](https://github.com/GladysAssistan
   (`xmltv_tnt.xml.gz`, 30 chaînes, ~8 jours). Pas de compte, pas de clé.
 - Un appareil Gladys par chaîne cochée, avec 3 capteurs texte en lecture
   seule : **En cours**, **À suivre**, **Ce soir** (programme à 21h10).
-- Gladys appelle `onPoll` toutes les `poll_frequency` secondes pour chaque
+- Gladys appelle `onPoll` toutes les `poll_frequency` millisecondes pour chaque
   appareil. Le guide est gardé en mémoire et re-téléchargé au plus toutes les
   6 h (nouvel essai 15 min après un échec, l'ancien guide reste utilisé).
 - Horaires calculés et affichés à l'heure de Paris, quel que soit le fuseau
@@ -39,10 +39,15 @@ enregistrées dans les scènes des utilisateurs : ne jamais les renommer.
 
 ## Configuration (manifest)
 
+> `poll_frequency` est en **millisecondes** et Gladys n'accepte que 1 s, 2 s,
+> 10 s, 15 s, 30 s ou 1 min (`DEVICE_POLL_FREQUENCIES` du cœur). Toute autre
+> valeur fait refuser la découverte (`invalid poll frequency`). D'où un champ
+> `select` et non un nombre libre.
+
 | Clé              | Type           | Défaut                                      | Rôle                                  |
 | ---------------- | -------------- | ------------------------------------------- | ------------------------------------- |
 | `channels`       | `multi_select` | TF1, France 2, France 3, France 5, M6, Arte | Chaînes suivies (1 appareil / chaîne) |
-| `poll_frequency` | `number`       | `300` (min `60`, max `3600`)                | Intervalle de rafraîchissement (s)    |
+| `poll_frequency` | `select`       | `60000` (1 min) ; aussi 30 s, 15 s, 10 s    | Intervalle de rafraîchissement (ms)   |
 
 Action : `test_guide` (« Tester le programme TV »).
 

@@ -20,8 +20,9 @@ Times are always displayed in the Paris time zone.
 
 1. Open the **Configuration** tab of the integration.
 2. Tick the **channels** to follow (30 TNT channels available).
-3. Set the **refresh interval** (`poll_frequency`, in seconds, from 60 to
-   3600, 300 by default): how often the sensors are updated.
+3. Pick the **refresh interval** (`poll_frequency`): every minute
+   (recommended, default), 30, 15 or 10 seconds. It is how often the sensors
+   are updated. Gladys accepts no interval longer than one minute.
 4. Save: the devices show up in the **Discovery** tab, ready to be added.
 
 The full guide (8 days) is downloaded at most every 6 hours, whatever the

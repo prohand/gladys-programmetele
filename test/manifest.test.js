@@ -9,7 +9,7 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { ACTIONS } from '../src/devices/index.js';
 import { CHANNELS } from '../src/channels.js';
-import { DEFAULT_CONFIG, POLL_FREQUENCY_MAX, POLL_FREQUENCY_MIN } from '../src/config.js';
+import { DEFAULT_CONFIG, normalizeConfig, POLL_FREQUENCIES } from '../src/config.js';
 import { parseXmltv } from '../src/guide.js';
 import {
   ACTION_GET_PROGRAMME,
@@ -41,16 +41,29 @@ test('widgets and scene declarations require Gladys >= 5.1.0', () => {
 test('config_schema defaults stay consistent with DEFAULT_CONFIG', () => {
   for (const f of manifest.config_schema) {
     if (f.default !== undefined) {
-      assert.deepEqual(DEFAULT_CONFIG[f.key], f.default, `DEFAULT_CONFIG.${f.key} must match`);
+      // Compare after normalization: a select stores strings.
+      assert.deepEqual(
+        normalizeConfig({ [f.key]: f.default })[f.key],
+        DEFAULT_CONFIG[f.key],
+        `DEFAULT_CONFIG.${f.key} must match the manifest default`,
+      );
     }
   }
 });
 
-test('the poll_frequency field matches the code bounds', () => {
+// Values of DEVICE_POLL_FREQUENCIES in the Gladys core (server/utils/constants.js):
+// any other device poll_frequency rejects the whole discovery (HTTP 400).
+const GLADYS_POLL_FREQUENCIES = [1000, 2000, 10_000, 15_000, 30_000, 60_000];
+
+test('poll_frequency options are milliseconds Gladys accepts', () => {
   const poll = field('poll_frequency');
-  assert.equal(poll.type, 'number');
-  assert.equal(poll.min, POLL_FREQUENCY_MIN);
-  assert.equal(poll.max, POLL_FREQUENCY_MAX);
+  assert.equal(poll.type, 'select');
+  const values = poll.options.map((o) => Number(o.value));
+  assert.deepEqual(values, POLL_FREQUENCIES);
+  for (const value of values) {
+    assert.ok(GLADYS_POLL_FREQUENCIES.includes(value), `${value} is refused by Gladys`);
+  }
+  assert.ok(GLADYS_POLL_FREQUENCIES.includes(DEFAULT_CONFIG.poll_frequency));
 });
 
 test('every channel option list is exactly the known channels', () => {
