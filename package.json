@@ -1,6 +1,6 @@
 {
   "name": "gladys-programmetele",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "private": true,
   "description": "Gladys Assistant external integration: French TV guide (now, next and tonight on TNT channels).",
   "type": "module",
