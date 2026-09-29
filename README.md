@@ -92,7 +92,7 @@ npx github:GladysAssistant/integration-store .   # validation du store
 ## Publier
 
 1. Ajouter le topic GitHub `gladys-assistant-integration` au dépôt.
-2. Remplacer `cover.png` (800×534 px, ≤150 Ko) — l'actuel est celui du template.
+2. `cover.png` : 800×534 px, ≤150 Ko (limite du store).
 3. **Actions → Release → Run workflow** (`patch` / `minor` / `major`) : bump de
    version, tag et image multi-arch sur `ghcr.io/prohand/gladys-programmetele`.
 
