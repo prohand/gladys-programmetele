@@ -10,9 +10,7 @@
   "docker_image": "ghcr.io/prohand/gladys-programmetele:2.0.0",
   "gladys_version": ">=5.1.0",
   "cover_image": "https://raw.githubusercontent.com/prohand/gladys-programmetele/main/cover.png",
-  "categories": [
-    "multimedia"
-  ],
+  "categories": ["multimedia"],
   "config_schema": [
     {
       "key": "intro",
@@ -47,14 +45,7 @@
         "fr": "Un appareil Gladys est créé par chaîne cochée."
       },
       "required": true,
-      "default": [
-        "TF1.fr",
-        "France2.fr",
-        "France3.fr",
-        "France5.fr",
-        "M6.fr",
-        "Arte.fr"
-      ],
+      "default": ["TF1.fr", "France2.fr", "France3.fr", "France5.fr", "M6.fr", "Arte.fr"],
       "options": [
         {
           "value": "TF1.fr",
