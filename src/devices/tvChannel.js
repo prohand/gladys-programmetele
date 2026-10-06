@@ -61,6 +61,12 @@ export const tvChannel = {
       // Gladys will call onPoll at this interval (in MILLISECONDS, see
       // POLL_FREQUENCY in src/config.js).
       poll_frequency: config.poll_frequency,
+      // Gladys only schedules a device that also asks for it: `should_poll`
+      // is false by default in the core, and without it the sensors were
+      // never refreshed. The core reads the flag once, at creation: devices
+      // created before it are refreshed by the integration's own loop
+      // (index.js).
+      should_poll: true,
       features: [
         textFeature(ids, FEATURE.CURRENT),
         textFeature(ids, FEATURE.NEXT),

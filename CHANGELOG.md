@@ -17,6 +17,11 @@ All notable changes to this integration are documented here. The format follows
 - Development dependencies updated to their latest versions (ESLint 10.12, Prettier 3.9.9, globals 17.13).
 - Manifest re-formatted with Prettier, so the CI format check passes again.
 
+### Fixed
+
+- The channel sensors (now, next, tonight) are refreshed every minute again: devices are published with `should_poll: true`, without which Gladys never polls them, and an integration-owned loop refreshes the channels created before that flag.
+- The Release workflow re-runs Prettier on the manifest after `jq`, so a release no longer leaves `main` with a failing CI format check.
+
 ## [2.0.0] - 2026-09-29
 
 First public release.

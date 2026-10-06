@@ -15,7 +15,7 @@
 // -----------------------------------------------------------------------------
 
 import { GladysIntegration, logger } from '@gladysassistant/integration-sdk';
-import { normalizeConfig } from './src/config.js';
+import { normalizeConfig, POLL_FREQUENCY } from './src/config.js';
 import { getGuide } from './src/guide.js';
 import {
   ACTIONS,
@@ -34,6 +34,35 @@ let config = normalizeConfig();
 
 // Last connection status sent to Gladys (avoid sending the same one again).
 let lastStatus = null;
+
+// Last publication of each channel (XMLTV id -> ms). Two paths refresh the
+// channels — the core's poll and the integration's own loop below — and this
+// keeps them to one publication a minute between them.
+const lastRefreshAt = new Map();
+const MIN_REFRESH_GAP_MS = 50_000;
+
+const isDue = (channel, now = Date.now()) =>
+  now - (lastRefreshAt.get(channel.id) ?? 0) >= MIN_REFRESH_GAP_MS;
+
+// The integration's own refresh loop. Gladys only polls a device whose row
+// carries `should_poll: true`, read once when the device is created: every
+// channel created before that flag was published would stay frozen forever.
+let refreshTimer = null;
+function startRefreshLoop() {
+  if (refreshTimer) {
+    return;
+  }
+  refreshTimer = setInterval(() => {
+    refreshCreatedDevices().catch((err) => logger.error('Scheduled refresh failed', err));
+  }, POLL_FREQUENCY);
+  refreshTimer.unref?.();
+}
+function stopRefreshLoop() {
+  if (refreshTimer) {
+    clearInterval(refreshTimer);
+    refreshTimer = null;
+  }
+}
 
 // Fires the `programme_started` scene trigger every time a programme starts,
 // and asks the dashboard to re-pull the widget at that moment.
@@ -61,8 +90,12 @@ gladys.onPoll(async (device) => {
     logger.debug(`onPoll ignored (unknown device) for ${device.external_id}`);
     return;
   }
+  if (!isDue(channel)) {
+    return;
+  }
   try {
     await tvChannel.onPoll(gladys, channel);
+    lastRefreshAt.set(channel.id, Date.now());
     await reportStatus(true);
   } catch (err) {
     logger.error(`Refresh failed for ${channel.name}`, err);
@@ -107,6 +140,7 @@ gladys.on('connected', async () => {
     // guide download below, so a download failure does not stop it: the
     // watcher retries on its own every minute.
     watcher.start();
+    startRefreshLoop();
 
     // 4) Fill the sensors right away, without waiting for the first poll.
     await refreshCreatedDevices();
@@ -124,13 +158,14 @@ gladys.on('connected', async () => {
 
 gladys.on('disconnected', () => {
   watcher.stop();
+  stopRefreshLoop();
 });
 
 // Publish the programmes of every channel device already created in Gladys.
 async function refreshCreatedDevices() {
   const created = new Set(gladys.devices.map((device) => device.external_id));
-  const channels = selectedChannels(config).filter((channel) =>
-    created.has(tvChannel.deviceExternalId(gladys, channel)),
+  const channels = selectedChannels(config).filter(
+    (channel) => created.has(tvChannel.deviceExternalId(gladys, channel)) && isDue(channel),
   );
   if (channels.length === 0) {
     return;
@@ -141,6 +176,8 @@ async function refreshCreatedDevices() {
   for (let i = 0; i < states.length; i += 99) {
     await gladys.publishStates(states.slice(i, i + 99));
   }
+  const now = Date.now();
+  channels.forEach((channel) => lastRefreshAt.set(channel.id, now));
 }
 
 async function reportStatus(connected) {
@@ -165,6 +202,7 @@ async function reportStatus(connected) {
 gladys.handleShutdown((signal) => {
   logger.info(`Received ${signal} -> graceful shutdown`);
   watcher.stop();
+  stopRefreshLoop();
 });
 
 // --- Startup -----------------------------------------------------------------

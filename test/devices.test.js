@@ -34,6 +34,8 @@ test('one device per selected channel, polled every minute', () => {
   for (const device of devices) {
     assert.match(device.name, /^Programme TV /);
     assert.equal(device.poll_frequency, 60_000);
+    // Without should_poll the core never schedules the device.
+    assert.equal(device.should_poll, true);
     assert.equal(device.features.length, 3);
   }
 });
