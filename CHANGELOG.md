@@ -6,6 +6,8 @@ All notable changes to this integration are documented here. The format follows
 
 ## [Unreleased]
 
+## [2.1.0] - 2026-10-06
+
 ### Added
 
 - `SECURITY.md`: how to report a vulnerability.
@@ -41,5 +43,6 @@ First public release.
 
 - Poll_frequency en millisecondes, valeurs acceptées par Gladys
 
-[Unreleased]: https://github.com/prohand/gladys-programmetele/compare/v2.0.0...HEAD
+[Unreleased]: https://github.com/prohand/gladys-programmetele/compare/v2.1.0...HEAD
+[2.1.0]: https://github.com/prohand/gladys-programmetele/compare/v2.0.0...v2.1.0
 [2.0.0]: https://github.com/prohand/gladys-programmetele/releases/tag/v2.0.0
