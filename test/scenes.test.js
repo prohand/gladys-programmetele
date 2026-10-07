@@ -85,6 +85,27 @@ test('the watcher fires each started programme once, then refreshes the widget',
   assert.equal(refreshed, 2);
 });
 
+test('two checks waiting for the same download do not fire a programme twice', async () => {
+  let release;
+  const download = new Promise((resolve) => (release = resolve));
+  globalThis.fetch = async () => {
+    await download;
+    return { ok: true, arrayBuffer: async () => Buffer.from(xml) };
+  };
+  const gladys = createFakeGladys();
+  const watcher = createProgrammeWatcher(gladys);
+  await watcher.check(new Date('2026-09-29T17:59:30Z'));
+  // The second check starts while the first still waits for the guide.
+  const first = watcher.check(new Date('2026-09-29T18:00:30Z'));
+  const second = watcher.check(new Date('2026-09-29T18:01:30Z'));
+  release();
+  await Promise.all([first, second]);
+  assert.deepEqual(
+    gladys.sceneEvents.map((e) => e.data.title),
+    ['Météo'],
+  );
+});
+
 test('the watcher drops programmes started too long ago after a pause', async () => {
   mockGuideDownload();
   const gladys = createFakeGladys();

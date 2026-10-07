@@ -53,6 +53,8 @@ src/scenes.js             scene trigger `programme_started` + scene action `get_
 - **The guide is downloaded once and shared.** `getGuide()` keeps the parsed guide for 6 h
   (`GUIDE_MAX_AGE_MS`), waits 15 min after a failure (`GUIDE_RETRY_DELAY_MS`) while serving the
   old guide, and shares one in-flight promise so ten devices polled together cost one download.
+  Once a guide exists, an old one is served at once while the new one downloads: only the very
+  first download is ever waited for (the widget gives up on it after 9 s, `PULL_DEADLINE_MS`).
   Never call `downloadGuide()` from a device, widget or scene path.
 - **Times are French times.** Display and "tonight" (21:10, `PRIME_TIME`) are computed in
   `Europe/Paris` through `Intl.DateTimeFormat`, whatever the container time zone. XMLTV dates are

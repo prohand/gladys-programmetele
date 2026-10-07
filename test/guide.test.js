@@ -145,8 +145,23 @@ test('getGuide keeps the old guide when a refresh fails, and waits before retryi
   const later = now + GUIDE_MAX_AGE_MS + 1;
   assert.equal(await getGuide({ now: later }), first);
   assert.equal(calls(), 1);
+  // The old guide is served at once, the failed download settles behind it.
+  await new Promise((resolve) => setImmediate(resolve));
   await getGuide({ now: later + 60_000 });
   assert.equal(calls(), 1, 'no new try before the retry delay');
   await getGuide({ now: later + GUIDE_RETRY_DELAY_MS + 1 });
   assert.equal(calls(), 2);
+});
+
+test('getGuide serves the old guide at once while a new one downloads', async () => {
+  mockFetch(gzipSync(xml));
+  const now = Date.now();
+  const first = await getGuide({ now });
+
+  // A download that never ends: the old guide must still come back right away.
+  globalThis.fetch = () => new Promise(() => {});
+  const started = Date.now();
+  assert.equal(await getGuide({ now: now + GUIDE_MAX_AGE_MS + 1 }), first);
+  assert.ok(Date.now() - started < 1000);
+  resetGuideCache();
 });
