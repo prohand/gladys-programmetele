@@ -155,6 +155,23 @@ export async function getGuide({ now = Date.now(), force = false } = {}) {
   if (!force && (fresh || waitBeforeRetry)) {
     return cache.programmes;
   }
+  const download = startDownload(now);
+  // An old guide still covers several days: serve it while the new one comes
+  // in. Waiting for the download instead (up to a minute) is what a widget
+  // pull, a scene action and the programme watcher used to do every 6 hours,
+  // and a widget that misses the core's 15 s ack is dead until a reload.
+  if (cache && !force) {
+    return cache.programmes;
+  }
+  return download;
+}
+
+/**
+ * Download the guide, or join the download already running.
+ * @param {number} now
+ * @returns {Promise<Map>}
+ */
+function startDownload(now) {
   if (!pending) {
     pending = downloadGuide()
       .then((programmes) => {

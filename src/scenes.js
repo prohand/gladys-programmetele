@@ -70,9 +70,22 @@ export function createProgrammeWatcher(gladys, { onStarted } = {}) {
       lastCheck = now;
       return [];
     }
-    const from = new Date(Math.max(lastCheck.getTime(), now.getTime() - MAX_CATCH_UP_MS));
-    const guide = await getGuide({ now: now.getTime() });
+    const previous = lastCheck;
+    const from = new Date(Math.max(previous.getTime(), now.getTime() - MAX_CATCH_UP_MS));
+    // Moved forward BEFORE waiting for the guide: a check still waiting for a
+    // download when the next one starts must not hand it the same window, or
+    // every programme in it would fire twice.
     lastCheck = now;
+    let guide;
+    try {
+      guide = await getGuide({ now: now.getTime() });
+    } catch (err) {
+      // No guide at all: give the window back, the next check catches it up.
+      if (lastCheck === now) {
+        lastCheck = previous;
+      }
+      throw err;
+    }
     const events = findStartedProgrammes(guide, from, now).map(({ channelId, programme }) =>
       buildStartedEvent(channelId, programme),
     );

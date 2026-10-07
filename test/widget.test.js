@@ -2,8 +2,14 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { validateWidgetContent } from '@gladysassistant/integration-sdk';
-import { buildWidgetContent, MAX_ITEMS, MOMENT, widgetChannels } from '../src/widget.js';
-import { parseXmltv } from '../src/guide.js';
+import {
+  buildWidgetContent,
+  getTvGuideWidget,
+  MAX_ITEMS,
+  MOMENT,
+  widgetChannels,
+} from '../src/widget.js';
+import { parseXmltv, resetGuideCache } from '../src/guide.js';
 import { normalizeConfig } from '../src/config.js';
 import { CHANNELS } from '../src/channels.js';
 
@@ -69,4 +75,22 @@ test('no channel: a valid text explains what to do', () => {
   const content = buildWidgetContent(guide, { config: normalizeConfig({ channels: [] }), now });
   assert.deepEqual(validateWidgetContent(content), []);
   assert.equal(content.components[0].type, 'text');
+});
+
+test('a first download slower than the deadline gives a loading card, not a dead one', async () => {
+  const realFetch = globalThis.fetch;
+  // Slow, and a failure in the end: the card must not wait for either.
+  globalThis.fetch = () =>
+    new Promise((resolve, reject) => setTimeout(() => reject(new Error('timeout')), 100));
+  try {
+    resetGuideCache();
+    const content = await getTvGuideWidget({ settings: {}, language: 'fr' }, normalizeConfig(), {
+      deadlineMs: 10,
+    });
+    assert.deepEqual(validateWidgetContent(content), []);
+    assert.equal(content.ttl_seconds, 15);
+  } finally {
+    globalThis.fetch = realFetch;
+    resetGuideCache();
+  }
 });

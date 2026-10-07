@@ -125,7 +125,40 @@ export function buildWidgetContent(guide, { settings = {}, language, config, now
 /**
  * Handler of `onWidgetGet('tv_guide')`.
  */
-export async function getTvGuideWidget({ settings, language }, config) {
-  const guide = await getGuide();
+// The core waits 15 s for a widget, then shows "data unavailable" and never
+// retries until the dashboard is reloaded. Only the very first download can
+// take that long (an old guide is served while a new one comes in): past this
+// deadline the card says so, and the download keeps going for the next pull.
+export const PULL_DEADLINE_MS = 9000;
+const LOADING_TTL_SECONDS = 15;
+
+export async function getTvGuideWidget(
+  { settings, language },
+  config,
+  { deadlineMs = PULL_DEADLINE_MS } = {},
+) {
+  const download = getGuide();
+  download.catch(() => {});
+  let timer;
+  const late = new Promise((resolve) => {
+    timer = setTimeout(() => resolve(null), deadlineMs);
+    timer.unref?.();
+  });
+  const guide = await Promise.race([download, late]).finally(() => clearTimeout(timer));
+  if (!guide) {
+    return {
+      ttl_seconds: LOADING_TTL_SECONDS,
+      components: [
+        {
+          type: 'text',
+          variant: 'body',
+          text: {
+            en: 'Downloading the TV guide…',
+            fr: 'Téléchargement du programme TV…',
+          },
+        },
+      ],
+    };
+  }
   return buildWidgetContent(guide, { settings, language, config });
 }
