@@ -5,8 +5,10 @@ import { validateWidgetContent } from '@gladysassistant/integration-sdk';
 import {
   buildWidgetContent,
   getTvGuideWidget,
+  LOADING_TTL_SECONDS,
   MAX_ITEMS,
   MOMENT,
+  UNAVAILABLE_TTL_SECONDS,
   widgetChannels,
 } from '../src/widget.js';
 import { parseXmltv, resetGuideCache } from '../src/guide.js';
@@ -88,7 +90,28 @@ test('a first download slower than the deadline gives a loading card, not a dead
       deadlineMs: 10,
     });
     assert.deepEqual(validateWidgetContent(content), []);
-    assert.equal(content.ttl_seconds, 15);
+    assert.equal(content.ttl_seconds, LOADING_TTL_SECONDS);
+  } finally {
+    globalThis.fetch = realFetch;
+    resetGuideCache();
+  }
+});
+
+test('a failed first download gives an "unavailable" card with a short TTL, never a throw', async () => {
+  const realFetch = globalThis.fetch;
+  globalThis.fetch = async () => new Response(null, { status: 503 });
+  try {
+    resetGuideCache();
+    for (let pull = 0; pull < 2; pull += 1) {
+      // The first pull waits for the failed download, the second one fails at
+      // once (retry delay): both must answer a valid card.
+      const content = await getTvGuideWidget({ settings: {}, language: 'fr' }, normalizeConfig());
+      assert.deepEqual(validateWidgetContent(content), []);
+      assert.equal(content.ttl_seconds, UNAVAILABLE_TTL_SECONDS);
+      assert.match(content.components[0].text.fr, /indisponible/);
+      assert.match(content.components[0].text.en, /unavailable/);
+    }
+    assert.ok(UNAVAILABLE_TTL_SECONDS <= 120);
   } finally {
     globalThis.fetch = realFetch;
     resetGuideCache();

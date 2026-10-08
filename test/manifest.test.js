@@ -10,7 +10,8 @@ import { readFile } from 'node:fs/promises';
 import { ACTIONS } from '../src/devices/index.js';
 import { CHANNELS } from '../src/channels.js';
 import { DEFAULT_CONFIG, normalizeConfig, POLL_FREQUENCY } from '../src/config.js';
-import { parseXmltv } from '../src/guide.js';
+import { parseXmltv, resetGuideCache } from '../src/guide.js';
+import { completeGuide, stubGuideDownload } from './helpers/guide.js';
 import {
   ACTION_GET_PROGRAMME,
   buildStartedEvent,
@@ -102,18 +103,17 @@ test('get_programme: the handler returns exactly the declared outputs', async ()
   const action = manifest.scene_actions.find((a) => a.key === ACTION_GET_PROGRAMME);
   assert.ok(action);
   const realFetch = globalThis.fetch;
-  globalThis.fetch = async () => ({
-    ok: true,
-    arrayBuffer: async () =>
-      Buffer.from(
-        '<programme start="20260101200000" stop="20260101210000" channel="TF1.fr"><title>T</title></programme>',
-      ),
-  });
+  stubGuideDownload(
+    completeGuide(
+      '<tv><programme start="20260101200000" stop="20260101210000" channel="TF1.fr"><title>T</title></programme></tv>',
+    ),
+  );
   try {
     const outputs = await getProgrammeAction({ channel: 'TF1.fr' });
     assert.deepEqual(Object.keys(outputs).sort(), action.outputs.map((o) => o.key).sort());
   } finally {
     globalThis.fetch = realFetch;
+    resetGuideCache();
   }
 });
 

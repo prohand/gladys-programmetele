@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-A Gladys Assistant **external integration** (Node 20+, ESM, no build step, one runtime
+A Gladys Assistant **external integration** (Node 24+, ESM, no build step, one runtime
 dependency: `@gladysassistant/integration-sdk`) that shows the French TV guide (TNT channels):
 what is on air now, what comes next, and tonight's programme. It runs as a container next to
 Gladys and talks to it over the SDK's WebSocket. No HTTP server, no database: the guide lives in
@@ -38,7 +38,8 @@ and `docker_image`, tags `vX.Y.Z`, calls `build.yml`): never bump versions by ha
 ## Architecture
 
 ```
-index.js                  SDK wiring only: handlers registered BEFORE connect()
+index.js                  builds the SDK, registers the handlers BEFORE connect(), connects
+src/integration.js        lifecycle: SDK handlers, refresh loop, connection status (testable)
 src/config.js             defaults + normalization (channels list, fixed poll frequency)
 src/channels.js           the 30 TNT channels (XMLTV id + display name)
 src/guide.js              download, cache and parse the XMLTV feed; schedule helpers
@@ -55,12 +56,29 @@ src/scenes.js             scene trigger `programme_started` + scene action `get_
   old guide, and shares one in-flight promise so ten devices polled together cost one download.
   Once a guide exists, an old one is served at once while the new one downloads: only the very
   first download is ever waited for (the widget gives up on it after 9 s, `PULL_DEADLINE_MS`).
-  Never call `downloadGuide()` from a device, widget or scene path.
+  With no guide at all, a failure is retried after 2 min (`GUIDE_FIRST_RETRY_DELAY_MS`) and every
+  call in between fails at once. Never call `downloadGuide()` from a device, widget or scene path.
+- **A download is conditional, capped and checked.** The ETag / Last-Modified of the guide are
+  sent back (`If-None-Match` / `If-Modified-Since`): a 304 keeps the guide and counts as fresh.
+  The body is capped at 20 MB (`Content-Length` first, then the bytes received) and the XML at
+  100 MB (`gunzipSync` `maxOutputLength`). A guide without its closing `</tv>`, or with fewer than
+  half of the known channels (`MIN_GUIDE_CHANNELS`), is a failed download: the old one stays.
+- **`getGuide({ force: true })` rejects** when its download fails, even with a guide in memory:
+  only the `test_guide` button uses it, and it must tell the truth (returned, never thrown).
+- **The status tells what failed** (`STATUS` in `src/integration.js`): guide unavailable, guide
+  outdated (its last programme has ended, `isGuideOutdated()`), devices refused, states refused.
+  It is reported by every poll and every cycle of the refresh loop, not only on connection.
+- **Connection.** The watcher and the refresh loop start before anything that can fail in the
+  `connected` handler. The configuration is the one the SDK fetched right before emitting
+  `connected` (`gladys.config`): no second `getConfig()`. A rejected first `connect()` is logged,
+  never `process.exit`: the SDK reconnects for life (even after a 4000 token refusal, possibly
+  transient while Gladys boots) and the supervisor does not recreate a container that exited.
 - **Times are French times.** Display and "tonight" (21:10, `PRIME_TIME`) are computed in
   `Europe/Paris` through `Intl.DateTimeFormat`, whatever the container time zone. XMLTV dates are
   parsed with their own offset (`parseXmltvDate`).
 - **No XML library.** The XMLTV format is read with regular expressions (`parseXmltv`); entities
-  are decoded by `decodeEntities`. Keep it dependency-free.
+  are decoded by `decodeEntities` (an invalid code point becomes U+FFFD instead of throwing) and
+  CDATA sections are read as they are (`decodeText`). Keep it dependency-free.
 - **Device identity = XMLTV channel id** (`ext:<selector>:tv-channel:TF1.fr`). `findChannelByDevice`
   searches ALL channels, so a device whose channel was unticked still resolves.
 - **`poll_frequency` is fixed at 60 000 ms** (`POLL_FREQUENCY`) and is not a config field: Gladys
@@ -69,9 +87,10 @@ src/scenes.js             scene trigger `programme_started` + scene action `get_
   the core).
 - **Every feature declares `min`/`max`** (`0`/`0` for text): they are NOT NULL in Gladys.
 - **Text states are capped** at 250 characters (`MAX_TEXT_LENGTH`), event strings at 1000.
-- **Scene trigger = transition.** The watcher checks every minute for programmes that started
-  since the last check, never replays the past on its first check, and catches up at most 5 min
-  after a pause (`MAX_CATCH_UP_MS`). A refused event never hides the others.
+- **Scene trigger = transition.** The watcher checks at the start of every minute for programmes
+  that started since the last check, never replays the past on the first check of the process,
+  and catches up at most 5 min after a pause (`MAX_CATCH_UP_MS`): its last check survives
+  `stop()`/`start()`, so a reconnection catches up. A refused event never hides the others.
 - **Keys are forever**: widget, trigger, action, field, variable and output keys are stored in
   users' dashboards and scenes. Add, never rename.
 
@@ -86,8 +105,11 @@ CI fails on formatting.
 ## Testing
 
 Tests never hit the network: `test/fixtures/guide.xml` is a small XMLTV file, `globalThis.fetch`
-is stubbed where needed, and `resetGuideCache()` must be called between tests that download (the
-cache is module-level). `test/helpers/fakeGladys.js` stands in for the SDK.
+is stubbed where needed (with real `Response` objects), and `resetGuideCache()` must be called
+between tests that download (the cache is module-level). A downloaded guide must list half of the
+known channels: `completeGuide()` of `test/helpers/guide.js` adds the missing ones (on a day of
+2000 by default, so the schedules looked at are untouched). `test/helpers/fakeGladys.js` stands in
+for the SDK, handlers included, so `src/integration.js` is tested without a Gladys.
 
 ## Conventions
 
@@ -95,4 +117,5 @@ cache is module-level). `test/helpers/fakeGladys.js` stands in for the SDK.
 - Comments explain **why**, in English. User-facing strings (action results, statuses, widget
   texts) are bilingual `{ en, fr }`; device and feature names are French.
 - User docs live in `docs/fr.md` and `docs/en.md` (re-hosted by Gladys): keep both in sync.
-- The rootfs is read-only in the Gladys sandbox: do not write files.
+- The rootfs is read-only in the Gladys sandbox: do not write files (no volume is declared).
+- The Docker image installs with `npm ci --omit=dev --ignore-scripts`: the lockfile is required.

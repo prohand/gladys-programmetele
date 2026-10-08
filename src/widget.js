@@ -10,9 +10,11 @@
 // README.
 // -----------------------------------------------------------------------------
 
-import { WIDGET_COLORS } from '@gladysassistant/integration-sdk';
+import { createLogger, WIDGET_COLORS } from '@gladysassistant/integration-sdk';
 import { findChannel } from './channels.js';
-import { findSchedule, formatTime, getGuide } from './guide.js';
+import { findSchedule, formatTime, getGuide, truncate } from './guide.js';
+
+const logger = createLogger({ name: 'widget' });
 
 export const WIDGET_TV_GUIDE = 'tv_guide';
 
@@ -42,7 +44,6 @@ const TEXTS = {
 };
 
 const lang = (language) => (language === 'fr' ? 'fr' : 'en');
-const truncate = (text, max) => (text.length > max ? `${text.slice(0, max - 1)}…` : text);
 
 /**
  * Channels shown by a widget instance: its own `channels` setting, or the
@@ -130,7 +131,16 @@ export function buildWidgetContent(guide, { settings = {}, language, config, now
 // take that long (an old guide is served while a new one comes in): past this
 // deadline the card says so, and the download keeps going for the next pull.
 export const PULL_DEADLINE_MS = 9000;
-const LOADING_TTL_SECONDS = 15;
+export const LOADING_TTL_SECONDS = 15;
+// No guide and the last download failed: the next try is at most
+// GUIDE_FIRST_RETRY_DELAY_MS (2 min) away, and every pull before it fails at
+// once without downloading. A minute keeps the card close to that retry.
+export const UNAVAILABLE_TTL_SECONDS = 60;
+
+const textCard = (ttl, text) => ({
+  ttl_seconds: ttl,
+  components: [{ type: 'text', variant: 'body', text }],
+});
 
 export async function getTvGuideWidget(
   { settings, language },
@@ -144,21 +154,25 @@ export async function getTvGuideWidget(
     timer = setTimeout(() => resolve(null), deadlineMs);
     timer.unref?.();
   });
-  const guide = await Promise.race([download, late]).finally(() => clearTimeout(timer));
+  let guide;
+  try {
+    guide = await Promise.race([download, late]);
+  } catch (err) {
+    // Throwing would leave the core's "data unavailable" on the card until the
+    // dashboard is reloaded: a card with a TTL is pulled again on its own.
+    logger.warn('TV guide unavailable for the widget', err);
+    return textCard(UNAVAILABLE_TTL_SECONDS, {
+      en: 'TV guide unavailable for now, a new try is made in a few minutes.',
+      fr: 'Programme TV indisponible pour le moment, nouvel essai dans quelques minutes.',
+    });
+  } finally {
+    clearTimeout(timer);
+  }
   if (!guide) {
-    return {
-      ttl_seconds: LOADING_TTL_SECONDS,
-      components: [
-        {
-          type: 'text',
-          variant: 'body',
-          text: {
-            en: 'Downloading the TV guide…',
-            fr: 'Téléchargement du programme TV…',
-          },
-        },
-      ],
-    };
+    return textCard(LOADING_TTL_SECONDS, {
+      en: 'Downloading the TV guide…',
+      fr: 'Téléchargement du programme TV…',
+    });
   }
   return buildWidgetContent(guide, { settings, language, config });
 }

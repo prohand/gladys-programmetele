@@ -1,4 +1,4 @@
-import { test, afterEach } from 'node:test';
+import { test, afterEach, mock } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import {
@@ -7,20 +7,28 @@ import {
   getProgrammeAction,
   MAX_CATCH_UP_MS,
   TRIGGER_PROGRAMME_STARTED,
+  WATCH_INTERVAL_MS,
 } from '../src/scenes.js';
 import { findStartedProgrammes, parseXmltv, resetGuideCache } from '../src/guide.js';
 import { createFakeGladys } from './helpers/fakeGladys.js';
+import { completeGuide, stubGuideDownload } from './helpers/guide.js';
 
 const xml = await readFile(new URL('./fixtures/guide.xml', import.meta.url), 'utf8');
 const realFetch = globalThis.fetch;
 
 afterEach(() => {
+  mock.timers.reset();
   globalThis.fetch = realFetch;
   resetGuideCache();
 });
 
-function mockGuideDownload() {
-  globalThis.fetch = async () => ({ ok: true, arrayBuffer: async () => Buffer.from(xml) });
+const mockGuideDownload = () => stubGuideDownload();
+
+// Let the checks started by the watcher's timers run to their end.
+async function flush() {
+  for (let i = 0; i < 20; i += 1) {
+    await new Promise((resolve) => setImmediate(resolve));
+  }
 }
 
 test('findStartedProgrammes returns the programmes started in ]from, to]', () => {
@@ -90,7 +98,7 @@ test('two checks waiting for the same download do not fire a programme twice', a
   const download = new Promise((resolve) => (release = resolve));
   globalThis.fetch = async () => {
     await download;
-    return { ok: true, arrayBuffer: async () => Buffer.from(xml) };
+    return new Response(Buffer.from(completeGuide(xml)));
   };
   const gladys = createFakeGladys();
   const watcher = createProgrammeWatcher(gladys);
@@ -117,14 +125,88 @@ test('the watcher drops programmes started too long ago after a pause', async ()
   assert.equal(gladys.sceneEvents.length, 0);
 });
 
+test('the watcher checks at the start of every minute, and stops cleanly', async () => {
+  mockGuideDownload();
+  mock.timers.enable({
+    apis: ['setTimeout', 'setInterval', 'Date'],
+    now: Date.parse('2026-09-29T17:59:30Z'),
+  });
+  const gladys = createFakeGladys();
+  const watcher = createProgrammeWatcher(gladys);
+  watcher.start(); // first check: baseline only
+  await flush();
+  // M6 "Météo" starts at 18:00:00Z: the check aligned on the minute fires it
+  // right then, not up to a minute later.
+  mock.timers.tick(30_000 - 1);
+  await flush();
+  assert.equal(gladys.sceneEvents.length, 0);
+  mock.timers.tick(1);
+  await flush();
+  assert.deepEqual(
+    gladys.sceneEvents.map((e) => e.data.title),
+    ['Météo'],
+  );
+  // Then every minute: TF1 "Quotidien" at 18:10:00Z.
+  mock.timers.tick(10 * WATCH_INTERVAL_MS);
+  await flush();
+  assert.equal(gladys.sceneEvents.length, 2);
+  watcher.stop();
+  mock.timers.tick(2 * 60 * 60 * 1000); // 21:10 Paris: "Grand film" would fire
+  await flush();
+  assert.equal(gladys.sceneEvents.length, 2, 'no check after stop()');
+});
+
+test('after a reconnection, the watcher catches up on the last 5 minutes', async () => {
+  mockGuideDownload();
+  mock.timers.enable({
+    apis: ['setTimeout', 'setInterval', 'Date'],
+    now: Date.parse('2026-09-29T17:58:00Z'),
+  });
+  const gladys = createFakeGladys();
+  const watcher = createProgrammeWatcher(gladys);
+  watcher.start();
+  await flush();
+  // Disconnected from 17:59 to 18:02: "Météo" (18:00) started meanwhile.
+  mock.timers.tick(60_000);
+  await flush();
+  watcher.stop();
+  mock.timers.tick(3 * 60_000);
+  watcher.start();
+  await flush();
+  assert.deepEqual(
+    gladys.sceneEvents.map((e) => e.data.title),
+    ['Météo'],
+  );
+  watcher.stop();
+});
+
+test('a reconnection long after does not replay more than 5 minutes', async () => {
+  mockGuideDownload();
+  mock.timers.enable({
+    apis: ['setTimeout', 'setInterval', 'Date'],
+    now: Date.parse('2026-09-29T17:58:00Z'),
+  });
+  const gladys = createFakeGladys();
+  const watcher = createProgrammeWatcher(gladys);
+  watcher.start();
+  await flush();
+  watcher.stop();
+  // Back at 18:14: "Météo" (18:00) is too old, "Quotidien" (18:10) is not.
+  mock.timers.tick(16 * 60_000);
+  watcher.start();
+  await flush();
+  assert.deepEqual(
+    gladys.sceneEvents.map((e) => e.data.title),
+    ['Quotidien & Cie'],
+  );
+  watcher.stop();
+});
+
 test('a refused event does not stop the following ones', async () => {
   // Two programmes starting at the same time (20:00 Paris).
   const sameStart = (channel) =>
     `<programme start="20260929200000 +0200" stop="20260929210000 +0200" channel="${channel}"><title>X</title></programme>`;
-  globalThis.fetch = async () => ({
-    ok: true,
-    arrayBuffer: async () => Buffer.from(`<tv>${sameStart('TF1.fr')}${sameStart('M6.fr')}</tv>`),
-  });
+  stubGuideDownload(completeGuide(`<tv>${sameStart('TF1.fr')}${sameStart('M6.fr')}</tv>`));
   const gladys = createFakeGladys();
   let calls = 0;
   gladys.publishSceneEvent = async () => {

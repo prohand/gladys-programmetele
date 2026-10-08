@@ -1,5 +1,6 @@
 # Weekly update PRs for the npm dependencies (the Gladys SDK first of all) and
-# monthly ones for the GitHub Actions. Development tools are grouped in one PR.
+# monthly ones for the GitHub Actions and the Docker base image (node:24-alpine,
+# rebuilt upstream for security fixes). Development tools are grouped in one PR.
 version: 2
 updates:
   - package-ecosystem: npm
@@ -14,3 +15,13 @@ updates:
     directory: /
     schedule:
       interval: monthly
+
+  - package-ecosystem: docker
+    directory: /
+    schedule:
+      interval: monthly
+    # Stay on Node 24, the version CI runs on: a new major is a deliberate
+    # change of the Dockerfile, the CI workflow and `engines` together.
+    ignore:
+      - dependency-name: node
+        update-types: ['version-update:semver-major']

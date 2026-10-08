@@ -2,8 +2,8 @@
 # Integration image.
 #
 # Gladys sandbox constraints ("the sandbox is the defense"):
-#   - rootfs mounted READ-ONLY -> never write outside /data
-#   - a single writable volume: /data
+#   - rootfs mounted READ-ONLY -> the integration writes nothing: the guide
+#     lives in memory, and no volume is declared
 #   - runs as a non-root user
 #   - multi-arch image (linux/amd64 + linux/arm64), see the CI workflow
 # -----------------------------------------------------------------------------
@@ -15,18 +15,19 @@ RUN apk add --no-cache dumb-init
 
 WORKDIR /app
 
-# Install the PROD dependencies first (better build cache).
-COPY package.json package-lock.json* ./
-RUN npm ci --omit=dev || npm install --omit=dev
+# Install the PROD dependencies first (better build cache). The lockfile is
+# required: `npm ci` installs exactly what was tested, and fails rather than
+# resolving new versions. No install scripts: the only runtime dependency
+# (the Gladys SDK) needs none.
+COPY package.json package-lock.json ./
+RUN npm ci --omit=dev --ignore-scripts && npm cache clean --force
 
 # Then the integration code.
 COPY index.js ./
 COPY src ./src
 COPY gladys-assistant-integration.json ./
 
-# The only writable location allowed at runtime.
 ENV NODE_ENV=production
-VOLUME ["/data"]
 
 # Run as an unprivileged user (already present in the node image).
 USER node
