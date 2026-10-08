@@ -6,6 +6,8 @@ All notable changes to this integration are documented here. The format follows
 
 ## [Unreleased]
 
+## [2.2.1] - 2026-10-08
+
 ### Changed
 
 - The guide is downloaded with `If-None-Match` / `If-Modified-Since`: an unchanged feed costs a 304 instead of the whole file.
@@ -69,7 +71,8 @@ First public release.
 
 - Poll_frequency en millisecondes, valeurs acceptées par Gladys
 
-[Unreleased]: https://github.com/prohand/gladys-programmetele/compare/v2.2.0...HEAD
+[Unreleased]: https://github.com/prohand/gladys-programmetele/compare/v2.2.1...HEAD
+[2.2.1]: https://github.com/prohand/gladys-programmetele/compare/v2.2.0...v2.2.1
 [2.2.0]: https://github.com/prohand/gladys-programmetele/compare/v2.1.0...v2.2.0
 [2.1.0]: https://github.com/prohand/gladys-programmetele/compare/v2.0.0...v2.1.0
 [2.0.0]: https://github.com/prohand/gladys-programmetele/releases/tag/v2.0.0
