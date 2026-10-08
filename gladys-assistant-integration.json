@@ -6,8 +6,8 @@
     "en": "French TV guide (TNT): what is on now, next and tonight on your favourite channels.",
     "fr": "Programme TV (TNT) : ce qui passe maintenant, ensuite et ce soir sur vos chaînes préférées."
   },
-  "version": "2.2.1",
-  "docker_image": "ghcr.io/prohand/gladys-programmetele:2.2.1",
+  "version": "2.2.2",
+  "docker_image": "ghcr.io/prohand/gladys-programmetele:2.2.2",
   "gladys_version": ">=5.1.0",
   "cover_image": "https://raw.githubusercontent.com/prohand/gladys-programmetele/main/cover.png",
   "categories": ["multimedia"],
