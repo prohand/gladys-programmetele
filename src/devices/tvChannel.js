@@ -4,19 +4,14 @@
 //   - "En cours"  : the programme on air now;
 //   - "À suivre"  : the next programme;
 //   - "Ce soir"   : tonight's programme (on air at 21:10, French time).
-// Values are refreshed by polling, every `poll_frequency` milliseconds.
+// Values are refreshed every minute by src/integration.js (the core's poll and
+// the integration's own loop), from one shared guide.
 // -----------------------------------------------------------------------------
 
-import {
-  createLogger,
-  DEVICE_FEATURE_CATEGORIES,
-  DEVICE_FEATURE_TYPES,
-} from '@gladysassistant/integration-sdk';
-import { findSchedule, formatCurrent, formatUpcoming, getGuide } from '../guide.js';
+import { DEVICE_FEATURE_CATEGORIES, DEVICE_FEATURE_TYPES } from '@gladysassistant/integration-sdk';
+import { findSchedule, formatCurrent, formatUpcoming } from '../guide.js';
 
 const DEVICE_TYPE = 'tv-channel';
-
-const logger = createLogger({ name: DEVICE_TYPE });
 
 // Feature keys, kept in one place so discovery and polling always agree.
 export const FEATURE = {
@@ -86,13 +81,5 @@ export const tvChannel = {
       { device_feature_external_id: ids.feature(FEATURE.NEXT), text: formatUpcoming(next) },
       { device_feature_external_id: ids.feature(FEATURE.TONIGHT), text: formatUpcoming(tonight) },
     ];
-  },
-
-  async onPoll(gladys, channel) {
-    // The guide is cached: this only downloads it when it is old.
-    const guide = await getGuide();
-    const states = this.buildStates(gladys, channel, guide);
-    logger.debug(`${channel.name}: ${states[0].text}`);
-    await gladys.publishStates(states);
   },
 };

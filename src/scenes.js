@@ -61,7 +61,7 @@ export function buildStartedEvent(channelId, programme) {
  *   check that fired at least one event (used to refresh the widget)
  */
 export function createProgrammeWatcher(gladys, { onStarted } = {}) {
-  let timer = null;
+  // Survives stop()/start(): see start().
   let lastCheck = null;
 
   async function check(now = new Date()) {
@@ -104,21 +104,40 @@ export function createProgrammeWatcher(gladys, { onStarted } = {}) {
     return events;
   }
 
+  let alignTimer = null;
+  let timer = null;
+  const tick = () => {
+    check().catch((err) => logger.error('Programme watcher check failed', err));
+  };
+
   return {
     check,
+    /**
+     * Check now, then at the start of every minute. `lastCheck` is NOT reset:
+     * after a reconnection the first check catches up on the programmes
+     * started meanwhile (bounded by MAX_CATCH_UP_MS). Only the very first
+     * start of the process begins from now.
+     */
     start() {
       this.stop();
-      lastCheck = null;
-      check().catch(() => {});
-      timer = setInterval(() => {
-        check().catch((err) => logger.error('Programme watcher check failed', err));
-      }, WATCH_INTERVAL_MS);
+      tick();
+      // Programmes start on the minute: checking at second 0 fires them
+      // within a few milliseconds, instead of up to 59 s late.
+      const delay = WATCH_INTERVAL_MS - (Date.now() % WATCH_INTERVAL_MS);
+      alignTimer = setTimeout(() => {
+        alignTimer = null;
+        tick();
+        timer = setInterval(tick, WATCH_INTERVAL_MS);
+        // The WebSocket keeps the process alive, not this watcher.
+        timer.unref?.();
+      }, delay);
+      alignTimer.unref?.();
     },
     stop() {
-      if (timer) {
-        clearInterval(timer);
-        timer = null;
-      }
+      clearTimeout(alignTimer);
+      clearInterval(timer);
+      alignTimer = null;
+      timer = null;
     },
   };
 }

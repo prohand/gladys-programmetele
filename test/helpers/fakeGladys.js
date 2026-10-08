@@ -7,6 +7,10 @@
 //   - setConnectionStatus            -> record calls so tests can assert them
 //   - publishSceneEvent              -> record calls so tests can assert them
 //   - requestWidgetRefresh           -> record calls so tests can assert them
+//   - publishDiscoveredDevices       -> record calls so tests can assert them
+//   - on* / on(event)                -> keep the handlers registered by
+//                                       src/integration.js in `handlers`
+//   - config, devices                -> the state the SDK resynchronizes
 // This lets us test the pure "wiring" logic (discovery payloads, dispatch)
 // without a running Gladys server or a real WebSocket.
 // -----------------------------------------------------------------------------
@@ -16,13 +20,18 @@ export function createFakeGladys() {
   const connectionStatuses = [];
   const sceneEvents = [];
   const widgetRefreshes = [];
+  const discovered = [];
+  const handlers = {};
 
   return {
     published,
     connectionStatuses,
     sceneEvents,
     widgetRefreshes,
+    discovered,
+    handlers,
     devices: [],
+    config: {},
 
     externalIds(type, platformId) {
       const device = `${type}:${platformId}`;
@@ -53,5 +62,17 @@ export function createFakeGladys() {
     requestWidgetRefresh(key) {
       widgetRefreshes.push(key);
     },
+
+    async publishDiscoveredDevices(devices) {
+      discovered.push(devices);
+    },
+
+    onScanRequest: (cb) => (handlers.scanRequest = cb),
+    onPoll: (cb) => (handlers.poll = cb),
+    onAction: (key, cb) => (handlers[`action:${key}`] = cb),
+    onWidgetGet: (key, cb) => (handlers[`widget:${key}`] = cb),
+    onSceneAction: (key, cb) => (handlers[`sceneAction:${key}`] = cb),
+    onConfigUpdated: (cb) => (handlers.configUpdated = cb),
+    on: (event, cb) => (handlers[`event:${event}`] = cb),
   };
 }

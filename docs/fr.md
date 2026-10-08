@@ -53,8 +53,9 @@ sous-titre, catégorie, heure de début, heure de fin, durée (min). Exemple :
 « Quand Koh-Lanta commence sur TF1, allumer la TV et m'envoyer un message ».
 
 Le déclencheur fonctionne pour les 30 chaînes, même celles qui ne sont pas
-cochées dans la configuration. Un programme est détecté dans la minute qui
-suit son début.
+cochées dans la configuration. Un programme est détecté dans les secondes qui
+suivent son début. Après une coupure, les programmes commencés dans les 5
+dernières minutes déclenchent encore la scène ; les plus anciens non.
 
 **Action « Lire le programme TV d'une chaîne »** — renvoie à la scène le
 programme en cours, à suivre et de ce soir (texte complet, titre seul, heure).
@@ -63,7 +64,8 @@ Exemple : envoyer chaque soir à 20h « Ce soir sur France 2 : … ».
 ## Actions
 
 - **Tester le programme TV** — télécharge le programme tout de suite et
-  affiche ce qui passe sur la première chaîne choisie.
+  affiche ce qui passe sur la première chaîne choisie. Si le téléchargement
+  échoue, il le dit, et précise si l'ancien programme reste utilisé.
 
 ## Source des données
 
@@ -75,8 +77,17 @@ d'un accès à Internet.
 
 - **« Aucun programme »** : la source n'a pas de données pour cette chaîne à
   ce moment-là.
-- **Statut « déconnecté »** : le téléchargement du programme a échoué. Si un
-  ancien programme est en mémoire, il continue d'être utilisé ; un nouvel
-  essai est fait 15 minutes plus tard.
+- **Statut « déconnecté »** : le message dit ce qui ne va pas.
+  - _Impossible de télécharger le programme TV_ : aucun programme n'a encore
+    pu être téléchargé ; un nouvel essai est fait toutes les 2 minutes.
+  - _Le programme TV est périmé_ : la source ne répond plus depuis longtemps
+    et l'ancien programme en mémoire n'a plus rien à venir.
+  - _Gladys a refusé les appareils des chaînes_ ou _Impossible d'envoyer les
+    programmes à Gladys_ : le programme est là, c'est Gladys qui a refusé ;
+    l'intégration réessaie toute seule chaque minute.
+- Si un téléchargement échoue alors qu'un ancien programme est en mémoire,
+  celui-ci continue d'être utilisé (il couvre plusieurs jours) ; un nouvel
+  essai est fait 15 minutes plus tard. Le bouton **Tester le programme TV**
+  le dit aussi.
 - Consultez les logs de l'intégration depuis l'interface Gladys (ou
   `docker logs` sur l'hôte) avec `LOG_LEVEL=debug` pour le détail complet.

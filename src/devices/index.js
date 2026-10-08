@@ -6,7 +6,14 @@
 // -----------------------------------------------------------------------------
 
 import { CHANNELS, findChannel } from '../channels.js';
-import { findSchedule, formatCurrent, getGuide } from '../guide.js';
+import {
+  findSchedule,
+  formatCurrent,
+  formatDateTime,
+  getGuide,
+  guideInfo,
+  isGuideOutdated,
+} from '../guide.js';
 import { tvChannel } from './tvChannel.js';
 
 /**
@@ -39,9 +46,16 @@ export function findChannelByDevice(gladys, device) {
  * gladys-assistant-integration.json), keyed by action `key`.
  */
 export const ACTIONS = {
-  // Download the guide now and show what is on air on the first channel.
+  // Download the guide now and show what is on air on the first channel. A
+  // failed download is RETURNED, not thrown: the SDK would ack a thrown error
+  // as a plain English string.
   async test_guide(gladys, { config }) {
-    const guide = await getGuide({ force: true });
+    let guide;
+    try {
+      guide = await getGuide({ force: true });
+    } catch (err) {
+      return downloadFailedMessage(err);
+    }
     const [channel = CHANNELS[0]] = selectedChannels(config);
     const { current } = findSchedule(guide, channel.id);
     return {
@@ -50,3 +64,30 @@ export const ACTIONS = {
     };
   },
 };
+
+// The download failed: say so, and say what is shown meanwhile.
+function downloadFailedMessage(err) {
+  const failed = {
+    en: `TV guide download failed (${err.message}).`,
+    fr: `Échec du téléchargement du guide TV (${err.message}).`,
+  };
+  const info = guideInfo();
+  if (!info) {
+    return {
+      en: `${failed.en} No guide available yet: a new try is made automatically in a few minutes.`,
+      fr: `${failed.fr} Aucun guide disponible pour l'instant : un nouvel essai est fait automatiquement dans quelques minutes.`,
+    };
+  }
+  const fetchedAt = formatDateTime(info.fetchedAt);
+  const until = formatDateTime(info.coversUntil);
+  if (isGuideOutdated()) {
+    return {
+      en: `${failed.en} The previous guide (downloaded ${fetchedAt}) has ended on ${until}: nothing left to show.`,
+      fr: `${failed.fr} L'ancien guide (téléchargé le ${fetchedAt}) s'est terminé le ${until} : plus rien à afficher.`,
+    };
+  }
+  return {
+    en: `${failed.en} The previous guide (downloaded ${fetchedAt}, programmes until ${until}) is still used.`,
+    fr: `${failed.fr} L'ancien guide (téléchargé le ${fetchedAt}, programmes jusqu'au ${until}) reste utilisé.`,
+  };
+}

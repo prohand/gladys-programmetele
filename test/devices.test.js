@@ -10,9 +10,10 @@ import {
 } from '../src/devices/index.js';
 import { FEATURE, tvChannel } from '../src/devices/tvChannel.js';
 import { CHANNELS, findChannel } from '../src/channels.js';
-import { parseXmltv, resetGuideCache } from '../src/guide.js';
+import { getGuide, parseXmltv, resetGuideCache } from '../src/guide.js';
 import { normalizeConfig } from '../src/config.js';
 import { createFakeGladys } from './helpers/fakeGladys.js';
+import { completeGuide, stubFetch, stubGuideDownload } from './helpers/guide.js';
 
 const xml = await readFile(new URL('./fixtures/guide.xml', import.meta.url), 'utf8');
 const config = normalizeConfig();
@@ -22,10 +23,6 @@ afterEach(() => {
   globalThis.fetch = realFetch;
   resetGuideCache();
 });
-
-function mockGuideDownload() {
-  globalThis.fetch = async () => ({ ok: true, arrayBuffer: async () => Buffer.from(xml) });
-}
 
 test('one device per selected channel, polled every minute', () => {
   const gladys = createFakeGladys();
@@ -109,18 +106,48 @@ test('buildStates publishes the 3 texts of a channel', () => {
   ]);
 });
 
-test('onPoll downloads the guide and publishes 3 text states', async () => {
-  mockGuideDownload();
-  const gladys = createFakeGladys();
-  await tvChannel.onPoll(gladys, findChannel('TF1.fr'));
-  assert.equal(gladys.published.length, 3);
-  assert.ok(gladys.published.every((s) => typeof s.text === 'string' && s.text.length > 0));
-});
-
 test('the test_guide action returns a multi-language message', async () => {
-  mockGuideDownload();
+  stubGuideDownload();
   const gladys = createFakeGladys();
   const message = await ACTIONS.test_guide(gladys, { fields: {}, config });
-  assert.match(message.en, /TV guide OK \(2 channels\)/);
-  assert.match(message.fr, /Guide TV OK \(2 chaînes\)/);
+  assert.match(message.en, /TV guide OK \(30 channels\)/);
+  assert.match(message.fr, /Guide TV OK \(30 chaînes\)/);
+});
+
+test('test_guide says the download failed, with no guide yet', async () => {
+  stubFetch(() => new Response(null, { status: 503 }));
+  const message = await ACTIONS.test_guide(createFakeGladys(), { fields: {}, config });
+  assert.match(
+    message.en,
+    /^TV guide download failed \(TV guide HTTP 503\)\. No guide available yet/,
+  );
+  assert.match(message.fr, /^Échec du téléchargement du guide TV .*Aucun guide disponible/);
+});
+
+test('test_guide says the download failed and that the previous guide is still used', async () => {
+  // A guide that still covers the present.
+  stubGuideDownload(
+    completeGuide(xml, { start: Date.now() - 3600_000, stop: Date.now() + 3600_000 }),
+  );
+  await getGuide();
+  stubFetch(() => new Response(null, { status: 500 }));
+  const message = await ACTIONS.test_guide(createFakeGladys(), { fields: {}, config });
+  assert.doesNotMatch(message.en, /OK/);
+  assert.match(
+    message.en,
+    /download failed \(TV guide HTTP 500\)\. The previous guide .* is still used\./,
+  );
+  assert.match(
+    message.fr,
+    /L'ancien guide \(téléchargé le \d{4}-\d\d-\d\d \d\d:\d\d, .*\) reste utilisé\./,
+  );
+});
+
+test('test_guide says when the previous guide has nothing left to show', async () => {
+  stubGuideDownload(); // the fixture: programmes of 2026-09-29 and 2000
+  await getGuide();
+  stubFetch(() => new Response(null, { status: 500 }));
+  const message = await ACTIONS.test_guide(createFakeGladys(), { fields: {}, config });
+  assert.match(message.en, /has ended on 2026-09-30 00:30: nothing left to show/);
+  assert.match(message.fr, /s'est terminé le 2026-09-30 00:30 : plus rien à afficher/);
 });

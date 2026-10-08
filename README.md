@@ -14,8 +14,17 @@ et le SDK [`@gladysassistant/integration-sdk`](https://github.com/GladysAssistan
 - Un appareil Gladys par chaîne cochée, avec 3 capteurs texte en lecture
   seule : **En cours**, **À suivre**, **Ce soir** (programme à 21h10).
 - Gladys appelle `onPoll` toutes les `poll_frequency` millisecondes pour chaque
-  appareil. Le guide est gardé en mémoire et re-téléchargé au plus toutes les
-  6 h (nouvel essai 15 min après un échec, l'ancien guide reste utilisé).
+  appareil (et l'intégration a sa propre boucle d'une minute). Le guide est
+  gardé en mémoire et re-téléchargé au plus toutes les 6 h, en requête
+  conditionnelle (`If-None-Match` / `If-Modified-Since` : un 304 garde le guide
+  actuel). Après un échec : nouvel essai 15 min plus tard, l'ancien guide reste
+  utilisé ; sans aucun guide, nouvel essai 2 min plus tard.
+- Un téléchargement est plafonné (20 Mo reçus, 100 Mo de XML) et refusé s'il
+  est incomplet (pas de `</tv>` final, ou moins de la moitié des chaînes
+  connues) : l'ancien guide reste alors utilisé.
+- Le statut de l'intégration dit ce qui ne va pas : programme impossible à
+  télécharger, programme périmé (plus aucun programme à venir), appareils
+  refusés par Gladys, ou programmes refusés par Gladys.
 - Horaires calculés et affichés à l'heure de Paris, quel que soit le fuseau
   du conteneur.
 
@@ -26,8 +35,8 @@ et le SDK [`@gladysassistant/integration-sdk`](https://github.com/GladysAssistan
   premier programme affiché ; `requestWidgetRefresh` quand un programme
   commence.
 - **Déclencheur `programme_started`** : une vérification par minute sur les
-  30 chaînes, un événement par programme qui commence (rattrapage limité à
-  5 min après une coupure). Filtres : `channel` (multi_select), `title`
+  30 chaînes, au début de chaque minute, un événement par programme qui
+  commence (rattrapage limité à 5 min après une coupure ou une reconnexion). Filtres : `channel` (multi_select), `title`
   (égalité exacte). Variables : `channel_name`, `title`, `sub_title`,
   `category`, `start`, `stop`, `duration_minutes`.
 - **Action `get_programme`** : champ `channel`, sorties `current`,
@@ -54,8 +63,9 @@ Action : `test_guide` (« Tester le programme TV »).
 
 ```
 .
-├─ index.js                          # démarrage SDK + branchement des événements
+├─ index.js                          # démarrage du SDK et connexion
 ├─ src/
+│  ├─ integration.js                 # handlers, boucle de rafraîchissement, statut
 │  ├─ channels.js                    # liste des 30 chaînes TNT (id XMLTV + nom)
 │  ├─ config.js                      # valeurs par défaut + nettoyage de la config
 │  ├─ guide.js                       # téléchargement, cache et lecture du XMLTV
