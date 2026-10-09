@@ -128,3 +128,7 @@ test('section fields are purely presentational', () => {
     }
   }
 });
+
+test('the manifest declares the transports used (the TV guide is downloaded from xmltvfr.fr)', () => {
+  assert.deepEqual(manifest.transports, ['cloud']);
+});
