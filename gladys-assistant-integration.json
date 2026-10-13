@@ -8,8 +8,8 @@
     "de": "Französisches TV-Programm (TNT): jetzt, danach und heute Abend auf deinen Lieblingssendern.",
     "es": "Guía de TV francesa (TNT): lo que se emite ahora, después y esta noche en sus cadenas favoritas."
   },
-  "version": "2.3.1",
-  "docker_image": "ghcr.io/prohand/gladys-programmetele:2.3.1",
+  "version": "2.4.0",
+  "docker_image": "ghcr.io/prohand/gladys-programmetele:2.4.0",
   "gladys_version": ">=5.1.0",
   "cover_image": "https://raw.githubusercontent.com/prohand/gladys-programmetele/main/cover.png",
   "categories": ["multimedia"],
