@@ -4,7 +4,9 @@
   "name": "Programme Télé",
   "description": {
     "en": "French TV guide (TNT): what is on now, next and tonight on your favourite channels.",
-    "fr": "Programme TV (TNT) : ce qui passe maintenant, ensuite et ce soir sur vos chaînes préférées."
+    "fr": "Programme TV (TNT) : ce qui passe maintenant, ensuite et ce soir sur vos chaînes préférées.",
+    "de": "Französisches TV-Programm (TNT): jetzt, danach und heute Abend auf Ihren Lieblingssendern.",
+    "es": "Guía de TV francesa (TNT): lo que se emite ahora, después y esta noche en sus cadenas favoritas."
   },
   "version": "2.3.1",
   "docker_image": "ghcr.io/prohand/gladys-programmetele:2.3.1",
@@ -18,18 +20,24 @@
       "type": "section",
       "label": {
         "en": "Getting started",
-        "fr": "Pour commencer"
+        "fr": "Pour commencer",
+        "de": "Erste Schritte",
+        "es": "Primeros pasos"
       },
       "description": {
         "en": "Pick the channels to follow: each one becomes a device with 3 sensors (now, next, tonight). The guide comes from the free XMLTV feed of xmltvfr.fr. No account, no API key.",
-        "fr": "Choisissez les chaînes à suivre : chacune devient un appareil avec 3 capteurs (en cours, à suivre, ce soir). Le programme vient du flux XMLTV gratuit de xmltvfr.fr. Pas de compte, pas de clé d'API."
+        "fr": "Choisissez les chaînes à suivre : chacune devient un appareil avec 3 capteurs (en cours, à suivre, ce soir). Le programme vient du flux XMLTV gratuit de xmltvfr.fr. Pas de compte, pas de clé d'API.",
+        "de": "Wählen Sie die Sender aus, die Sie verfolgen möchten: Jeder wird zu einem Gerät mit 3 Sensoren (jetzt, danach, heute Abend). Das Programm stammt aus dem kostenlosen XMLTV-Feed von xmltvfr.fr. Kein Konto, kein API-Schlüssel.",
+        "es": "Elija las cadenas que desea seguir: cada una se convierte en un dispositivo con 3 sensores (ahora, a continuación, esta noche). La programación procede del feed XMLTV gratuito de xmltvfr.fr. Sin cuenta ni clave de API."
       },
       "links": [
         {
           "url": "https://xmltvfr.fr",
           "label": {
             "en": "XMLTV source (xmltvfr.fr)",
-            "fr": "Source XMLTV (xmltvfr.fr)"
+            "fr": "Source XMLTV (xmltvfr.fr)",
+            "de": "XMLTV-Quelle (xmltvfr.fr)",
+            "es": "Fuente XMLTV (xmltvfr.fr)"
           }
         }
       ]
@@ -39,11 +47,15 @@
       "type": "multi_select",
       "label": {
         "en": "Channels",
-        "fr": "Chaînes"
+        "fr": "Chaînes",
+        "de": "Sender",
+        "es": "Cadenas"
       },
       "description": {
         "en": "One Gladys device is created per selected channel.",
-        "fr": "Un appareil Gladys est créé par chaîne cochée."
+        "fr": "Un appareil Gladys est créé par chaîne cochée.",
+        "de": "Für jeden ausgewählten Sender wird ein Gladys-Gerät erstellt.",
+        "es": "Se crea un dispositivo de Gladys por cada cadena seleccionada."
       },
       "required": true,
       "default": ["TF1.fr", "France2.fr", "France3.fr", "France5.fr", "M6.fr", "Arte.fr"],
@@ -52,210 +64,270 @@
           "value": "TF1.fr",
           "label": {
             "en": "TF1",
-            "fr": "TF1"
+            "fr": "TF1",
+            "de": "TF1",
+            "es": "TF1"
           }
         },
         {
           "value": "France2.fr",
           "label": {
             "en": "France 2",
-            "fr": "France 2"
+            "fr": "France 2",
+            "de": "France 2",
+            "es": "France 2"
           }
         },
         {
           "value": "France3.fr",
           "label": {
             "en": "France 3",
-            "fr": "France 3"
+            "fr": "France 3",
+            "de": "France 3",
+            "es": "France 3"
           }
         },
         {
           "value": "CanalPlus.fr",
           "label": {
             "en": "Canal+",
-            "fr": "Canal+"
+            "fr": "Canal+",
+            "de": "Canal+",
+            "es": "Canal+"
           }
         },
         {
           "value": "France5.fr",
           "label": {
             "en": "France 5",
-            "fr": "France 5"
+            "fr": "France 5",
+            "de": "France 5",
+            "es": "France 5"
           }
         },
         {
           "value": "M6.fr",
           "label": {
             "en": "M6",
-            "fr": "M6"
+            "fr": "M6",
+            "de": "M6",
+            "es": "M6"
           }
         },
         {
           "value": "Arte.fr",
           "label": {
             "en": "Arte",
-            "fr": "Arte"
+            "fr": "Arte",
+            "de": "Arte",
+            "es": "Arte"
           }
         },
         {
           "value": "W9.fr",
           "label": {
             "en": "W9",
-            "fr": "W9"
+            "fr": "W9",
+            "de": "W9",
+            "es": "W9"
           }
         },
         {
           "value": "TMC.fr",
           "label": {
             "en": "TMC",
-            "fr": "TMC"
+            "fr": "TMC",
+            "de": "TMC",
+            "es": "TMC"
           }
         },
         {
           "value": "NT1.fr",
           "label": {
             "en": "TFX",
-            "fr": "TFX"
+            "fr": "TFX",
+            "de": "TFX",
+            "es": "TFX"
           }
         },
         {
           "value": "LaChaineParlementaire.fr",
           "label": {
             "en": "LCP",
-            "fr": "LCP"
+            "fr": "LCP",
+            "de": "LCP",
+            "es": "LCP"
           }
         },
         {
           "value": "France4.fr",
           "label": {
             "en": "France 4",
-            "fr": "France 4"
+            "fr": "France 4",
+            "de": "France 4",
+            "es": "France 4"
           }
         },
         {
           "value": "BFMTV.fr",
           "label": {
             "en": "BFM TV",
-            "fr": "BFM TV"
+            "fr": "BFM TV",
+            "de": "BFM TV",
+            "es": "BFM TV"
           }
         },
         {
           "value": "CNews.fr",
           "label": {
             "en": "CNews",
-            "fr": "CNews"
+            "fr": "CNews",
+            "de": "CNews",
+            "es": "CNews"
           }
         },
         {
           "value": "CStar.fr",
           "label": {
             "en": "CStar",
-            "fr": "CStar"
+            "fr": "CStar",
+            "de": "CStar",
+            "es": "CStar"
           }
         },
         {
           "value": "Gulli.fr",
           "label": {
             "en": "Gulli",
-            "fr": "Gulli"
+            "fr": "Gulli",
+            "de": "Gulli",
+            "es": "Gulli"
           }
         },
         {
           "value": "T18.fr",
           "label": {
             "en": "T18",
-            "fr": "T18"
+            "fr": "T18",
+            "de": "T18",
+            "es": "T18"
           }
         },
         {
           "value": "NOVO19.fr",
           "label": {
             "en": "NOVO19",
-            "fr": "NOVO19"
+            "fr": "NOVO19",
+            "de": "NOVO19",
+            "es": "NOVO19"
           }
         },
         {
           "value": "TF1SeriesFilms.fr",
           "label": {
             "en": "TF1 Séries Films",
-            "fr": "TF1 Séries Films"
+            "fr": "TF1 Séries Films",
+            "de": "TF1 Séries Films",
+            "es": "TF1 Séries Films"
           }
         },
         {
           "value": "LEquipe21.fr",
           "label": {
             "en": "L'Équipe",
-            "fr": "L'Équipe"
+            "fr": "L'Équipe",
+            "de": "L'Équipe",
+            "es": "L'Équipe"
           }
         },
         {
           "value": "6ter.fr",
           "label": {
             "en": "6ter",
-            "fr": "6ter"
+            "fr": "6ter",
+            "de": "6ter",
+            "es": "6ter"
           }
         },
         {
           "value": "Numero23.fr",
           "label": {
             "en": "RMC Story",
-            "fr": "RMC Story"
+            "fr": "RMC Story",
+            "de": "RMC Story",
+            "es": "RMC Story"
           }
         },
         {
           "value": "RMCDecouverte.fr",
           "label": {
             "en": "RMC Découverte",
-            "fr": "RMC Découverte"
+            "fr": "RMC Découverte",
+            "de": "RMC Découverte",
+            "es": "RMC Découverte"
           }
         },
         {
           "value": "Cherie25.fr",
           "label": {
             "en": "RMC Life",
-            "fr": "RMC Life"
+            "fr": "RMC Life",
+            "de": "RMC Life",
+            "es": "RMC Life"
           }
         },
         {
           "value": "LCI.fr",
           "label": {
             "en": "LCI",
-            "fr": "LCI"
+            "fr": "LCI",
+            "de": "LCI",
+            "es": "LCI"
           }
         },
         {
           "value": "FranceInfo.fr",
           "label": {
             "en": "franceinfo:",
-            "fr": "franceinfo:"
+            "fr": "franceinfo:",
+            "de": "franceinfo:",
+            "es": "franceinfo:"
           }
         },
         {
           "value": "ParisPremiere.fr",
           "label": {
             "en": "Paris Première",
-            "fr": "Paris Première"
+            "fr": "Paris Première",
+            "de": "Paris Première",
+            "es": "Paris Première"
           }
         },
         {
           "value": "CanalPlusSport.fr",
           "label": {
             "en": "Canal+ Sport",
-            "fr": "Canal+ Sport"
+            "fr": "Canal+ Sport",
+            "de": "Canal+ Sport",
+            "es": "Canal+ Sport"
           }
         },
         {
           "value": "CanalPlusCinema.fr",
           "label": {
             "en": "Canal+ Cinéma",
-            "fr": "Canal+ Cinéma"
+            "fr": "Canal+ Cinéma",
+            "de": "Canal+ Cinéma",
+            "es": "Canal+ Cinéma"
           }
         },
         {
           "value": "PlanetePlus.fr",
           "label": {
             "en": "Planète+",
-            "fr": "Planète+"
+            "fr": "Planète+",
+            "de": "Planète+",
+            "es": "Planète+"
           }
         }
       ]
@@ -266,7 +338,9 @@
       "key": "test_guide",
       "label": {
         "en": "Test the TV guide",
-        "fr": "Tester le programme TV"
+        "fr": "Tester le programme TV",
+        "de": "TV-Programm testen",
+        "es": "Probar la guía de TV"
       },
       "timeout_seconds": 90
     }
@@ -276,11 +350,15 @@
       "key": "tv_guide",
       "label": {
         "en": "TV guide",
-        "fr": "Programme TV"
+        "fr": "Programme TV",
+        "de": "TV-Programm",
+        "es": "Guía de TV"
       },
       "description": {
         "en": "What is on now or tonight on your channels.",
-        "fr": "Ce qui passe maintenant ou ce soir sur vos chaînes."
+        "fr": "Ce qui passe maintenant ou ce soir sur vos chaînes.",
+        "de": "Was jetzt oder heute Abend auf Ihren Sendern läuft.",
+        "es": "Lo que se emite ahora o esta noche en sus cadenas."
       },
       "icon": "tv",
       "settings": [
@@ -290,7 +368,9 @@
           "display": "radio",
           "label": {
             "en": "Show",
-            "fr": "Afficher"
+            "fr": "Afficher",
+            "de": "Anzeigen",
+            "es": "Mostrar"
           },
           "default": "now",
           "options": [
@@ -298,14 +378,18 @@
               "value": "now",
               "label": {
                 "en": "Now",
-                "fr": "En ce moment"
+                "fr": "En ce moment",
+                "de": "Jetzt",
+                "es": "Ahora"
               }
             },
             {
               "value": "tonight",
               "label": {
                 "en": "Tonight (21:10)",
-                "fr": "Ce soir (21h10)"
+                "fr": "Ce soir (21h10)",
+                "de": "Heute Abend (21:10)",
+                "es": "Esta noche (21:10)"
               }
             }
           ]
@@ -315,221 +399,285 @@
           "type": "multi_select",
           "label": {
             "en": "Channels",
-            "fr": "Chaînes"
+            "fr": "Chaînes",
+            "de": "Sender",
+            "es": "Cadenas"
           },
           "description": {
             "en": "Up to 8 channels. Empty: the channels of the integration configuration.",
-            "fr": "8 chaînes maximum. Vide : les chaînes de la configuration de l'intégration."
+            "fr": "8 chaînes maximum. Vide : les chaînes de la configuration de l'intégration.",
+            "de": "Bis zu 8 Sender. Leer: die Sender aus der Konfiguration der Integration.",
+            "es": "Hasta 8 cadenas. Vacío: las cadenas de la configuración de la integración."
           },
           "options": [
             {
               "value": "TF1.fr",
               "label": {
                 "en": "TF1",
-                "fr": "TF1"
+                "fr": "TF1",
+                "de": "TF1",
+                "es": "TF1"
               }
             },
             {
               "value": "France2.fr",
               "label": {
                 "en": "France 2",
-                "fr": "France 2"
+                "fr": "France 2",
+                "de": "France 2",
+                "es": "France 2"
               }
             },
             {
               "value": "France3.fr",
               "label": {
                 "en": "France 3",
-                "fr": "France 3"
+                "fr": "France 3",
+                "de": "France 3",
+                "es": "France 3"
               }
             },
             {
               "value": "CanalPlus.fr",
               "label": {
                 "en": "Canal+",
-                "fr": "Canal+"
+                "fr": "Canal+",
+                "de": "Canal+",
+                "es": "Canal+"
               }
             },
             {
               "value": "France5.fr",
               "label": {
                 "en": "France 5",
-                "fr": "France 5"
+                "fr": "France 5",
+                "de": "France 5",
+                "es": "France 5"
               }
             },
             {
               "value": "M6.fr",
               "label": {
                 "en": "M6",
-                "fr": "M6"
+                "fr": "M6",
+                "de": "M6",
+                "es": "M6"
               }
             },
             {
               "value": "Arte.fr",
               "label": {
                 "en": "Arte",
-                "fr": "Arte"
+                "fr": "Arte",
+                "de": "Arte",
+                "es": "Arte"
               }
             },
             {
               "value": "W9.fr",
               "label": {
                 "en": "W9",
-                "fr": "W9"
+                "fr": "W9",
+                "de": "W9",
+                "es": "W9"
               }
             },
             {
               "value": "TMC.fr",
               "label": {
                 "en": "TMC",
-                "fr": "TMC"
+                "fr": "TMC",
+                "de": "TMC",
+                "es": "TMC"
               }
             },
             {
               "value": "NT1.fr",
               "label": {
                 "en": "TFX",
-                "fr": "TFX"
+                "fr": "TFX",
+                "de": "TFX",
+                "es": "TFX"
               }
             },
             {
               "value": "LaChaineParlementaire.fr",
               "label": {
                 "en": "LCP",
-                "fr": "LCP"
+                "fr": "LCP",
+                "de": "LCP",
+                "es": "LCP"
               }
             },
             {
               "value": "France4.fr",
               "label": {
                 "en": "France 4",
-                "fr": "France 4"
+                "fr": "France 4",
+                "de": "France 4",
+                "es": "France 4"
               }
             },
             {
               "value": "BFMTV.fr",
               "label": {
                 "en": "BFM TV",
-                "fr": "BFM TV"
+                "fr": "BFM TV",
+                "de": "BFM TV",
+                "es": "BFM TV"
               }
             },
             {
               "value": "CNews.fr",
               "label": {
                 "en": "CNews",
-                "fr": "CNews"
+                "fr": "CNews",
+                "de": "CNews",
+                "es": "CNews"
               }
             },
             {
               "value": "CStar.fr",
               "label": {
                 "en": "CStar",
-                "fr": "CStar"
+                "fr": "CStar",
+                "de": "CStar",
+                "es": "CStar"
               }
             },
             {
               "value": "Gulli.fr",
               "label": {
                 "en": "Gulli",
-                "fr": "Gulli"
+                "fr": "Gulli",
+                "de": "Gulli",
+                "es": "Gulli"
               }
             },
             {
               "value": "T18.fr",
               "label": {
                 "en": "T18",
-                "fr": "T18"
+                "fr": "T18",
+                "de": "T18",
+                "es": "T18"
               }
             },
             {
               "value": "NOVO19.fr",
               "label": {
                 "en": "NOVO19",
-                "fr": "NOVO19"
+                "fr": "NOVO19",
+                "de": "NOVO19",
+                "es": "NOVO19"
               }
             },
             {
               "value": "TF1SeriesFilms.fr",
               "label": {
                 "en": "TF1 Séries Films",
-                "fr": "TF1 Séries Films"
+                "fr": "TF1 Séries Films",
+                "de": "TF1 Séries Films",
+                "es": "TF1 Séries Films"
               }
             },
             {
               "value": "LEquipe21.fr",
               "label": {
                 "en": "L'Équipe",
-                "fr": "L'Équipe"
+                "fr": "L'Équipe",
+                "de": "L'Équipe",
+                "es": "L'Équipe"
               }
             },
             {
               "value": "6ter.fr",
               "label": {
                 "en": "6ter",
-                "fr": "6ter"
+                "fr": "6ter",
+                "de": "6ter",
+                "es": "6ter"
               }
             },
             {
               "value": "Numero23.fr",
               "label": {
                 "en": "RMC Story",
-                "fr": "RMC Story"
+                "fr": "RMC Story",
+                "de": "RMC Story",
+                "es": "RMC Story"
               }
             },
             {
               "value": "RMCDecouverte.fr",
               "label": {
                 "en": "RMC Découverte",
-                "fr": "RMC Découverte"
+                "fr": "RMC Découverte",
+                "de": "RMC Découverte",
+                "es": "RMC Découverte"
               }
             },
             {
               "value": "Cherie25.fr",
               "label": {
                 "en": "RMC Life",
-                "fr": "RMC Life"
+                "fr": "RMC Life",
+                "de": "RMC Life",
+                "es": "RMC Life"
               }
             },
             {
               "value": "LCI.fr",
               "label": {
                 "en": "LCI",
-                "fr": "LCI"
+                "fr": "LCI",
+                "de": "LCI",
+                "es": "LCI"
               }
             },
             {
               "value": "FranceInfo.fr",
               "label": {
                 "en": "franceinfo:",
-                "fr": "franceinfo:"
+                "fr": "franceinfo:",
+                "de": "franceinfo:",
+                "es": "franceinfo:"
               }
             },
             {
               "value": "ParisPremiere.fr",
               "label": {
                 "en": "Paris Première",
-                "fr": "Paris Première"
+                "fr": "Paris Première",
+                "de": "Paris Première",
+                "es": "Paris Première"
               }
             },
             {
               "value": "CanalPlusSport.fr",
               "label": {
                 "en": "Canal+ Sport",
-                "fr": "Canal+ Sport"
+                "fr": "Canal+ Sport",
+                "de": "Canal+ Sport",
+                "es": "Canal+ Sport"
               }
             },
             {
               "value": "CanalPlusCinema.fr",
               "label": {
                 "en": "Canal+ Cinéma",
-                "fr": "Canal+ Cinéma"
+                "fr": "Canal+ Cinéma",
+                "de": "Canal+ Cinéma",
+                "es": "Canal+ Cinéma"
               }
             },
             {
               "value": "PlanetePlus.fr",
               "label": {
                 "en": "Planète+",
-                "fr": "Planète+"
+                "fr": "Planète+",
+                "de": "Planète+",
+                "es": "Planète+"
               }
             }
           ]
@@ -542,11 +690,15 @@
       "key": "programme_started",
       "label": {
         "en": "A TV programme starts",
-        "fr": "Un programme TV commence"
+        "fr": "Un programme TV commence",
+        "de": "Eine TV-Sendung beginnt",
+        "es": "Empieza un programa de TV"
       },
       "description": {
         "en": "Fired when a programme starts on a TNT channel.",
-        "fr": "Déclenché quand un programme commence sur une chaîne TNT."
+        "fr": "Déclenché quand un programme commence sur une chaîne TNT.",
+        "de": "Wird ausgelöst, wenn eine Sendung auf einem TNT-Sender beginnt.",
+        "es": "Se activa cuando empieza un programa en una cadena de la TNT."
       },
       "fields": [
         {
@@ -554,221 +706,285 @@
           "type": "multi_select",
           "label": {
             "en": "Channels",
-            "fr": "Chaînes"
+            "fr": "Chaînes",
+            "de": "Sender",
+            "es": "Cadenas"
           },
           "description": {
             "en": "Empty: any channel.",
-            "fr": "Vide : n'importe quelle chaîne."
+            "fr": "Vide : n'importe quelle chaîne.",
+            "de": "Leer: beliebiger Sender.",
+            "es": "Vacío: cualquier cadena."
           },
           "options": [
             {
               "value": "TF1.fr",
               "label": {
                 "en": "TF1",
-                "fr": "TF1"
+                "fr": "TF1",
+                "de": "TF1",
+                "es": "TF1"
               }
             },
             {
               "value": "France2.fr",
               "label": {
                 "en": "France 2",
-                "fr": "France 2"
+                "fr": "France 2",
+                "de": "France 2",
+                "es": "France 2"
               }
             },
             {
               "value": "France3.fr",
               "label": {
                 "en": "France 3",
-                "fr": "France 3"
+                "fr": "France 3",
+                "de": "France 3",
+                "es": "France 3"
               }
             },
             {
               "value": "CanalPlus.fr",
               "label": {
                 "en": "Canal+",
-                "fr": "Canal+"
+                "fr": "Canal+",
+                "de": "Canal+",
+                "es": "Canal+"
               }
             },
             {
               "value": "France5.fr",
               "label": {
                 "en": "France 5",
-                "fr": "France 5"
+                "fr": "France 5",
+                "de": "France 5",
+                "es": "France 5"
               }
             },
             {
               "value": "M6.fr",
               "label": {
                 "en": "M6",
-                "fr": "M6"
+                "fr": "M6",
+                "de": "M6",
+                "es": "M6"
               }
             },
             {
               "value": "Arte.fr",
               "label": {
                 "en": "Arte",
-                "fr": "Arte"
+                "fr": "Arte",
+                "de": "Arte",
+                "es": "Arte"
               }
             },
             {
               "value": "W9.fr",
               "label": {
                 "en": "W9",
-                "fr": "W9"
+                "fr": "W9",
+                "de": "W9",
+                "es": "W9"
               }
             },
             {
               "value": "TMC.fr",
               "label": {
                 "en": "TMC",
-                "fr": "TMC"
+                "fr": "TMC",
+                "de": "TMC",
+                "es": "TMC"
               }
             },
             {
               "value": "NT1.fr",
               "label": {
                 "en": "TFX",
-                "fr": "TFX"
+                "fr": "TFX",
+                "de": "TFX",
+                "es": "TFX"
               }
             },
             {
               "value": "LaChaineParlementaire.fr",
               "label": {
                 "en": "LCP",
-                "fr": "LCP"
+                "fr": "LCP",
+                "de": "LCP",
+                "es": "LCP"
               }
             },
             {
               "value": "France4.fr",
               "label": {
                 "en": "France 4",
-                "fr": "France 4"
+                "fr": "France 4",
+                "de": "France 4",
+                "es": "France 4"
               }
             },
             {
               "value": "BFMTV.fr",
               "label": {
                 "en": "BFM TV",
-                "fr": "BFM TV"
+                "fr": "BFM TV",
+                "de": "BFM TV",
+                "es": "BFM TV"
               }
             },
             {
               "value": "CNews.fr",
               "label": {
                 "en": "CNews",
-                "fr": "CNews"
+                "fr": "CNews",
+                "de": "CNews",
+                "es": "CNews"
               }
             },
             {
               "value": "CStar.fr",
               "label": {
                 "en": "CStar",
-                "fr": "CStar"
+                "fr": "CStar",
+                "de": "CStar",
+                "es": "CStar"
               }
             },
             {
               "value": "Gulli.fr",
               "label": {
                 "en": "Gulli",
-                "fr": "Gulli"
+                "fr": "Gulli",
+                "de": "Gulli",
+                "es": "Gulli"
               }
             },
             {
               "value": "T18.fr",
               "label": {
                 "en": "T18",
-                "fr": "T18"
+                "fr": "T18",
+                "de": "T18",
+                "es": "T18"
               }
             },
             {
               "value": "NOVO19.fr",
               "label": {
                 "en": "NOVO19",
-                "fr": "NOVO19"
+                "fr": "NOVO19",
+                "de": "NOVO19",
+                "es": "NOVO19"
               }
             },
             {
               "value": "TF1SeriesFilms.fr",
               "label": {
                 "en": "TF1 Séries Films",
-                "fr": "TF1 Séries Films"
+                "fr": "TF1 Séries Films",
+                "de": "TF1 Séries Films",
+                "es": "TF1 Séries Films"
               }
             },
             {
               "value": "LEquipe21.fr",
               "label": {
                 "en": "L'Équipe",
-                "fr": "L'Équipe"
+                "fr": "L'Équipe",
+                "de": "L'Équipe",
+                "es": "L'Équipe"
               }
             },
             {
               "value": "6ter.fr",
               "label": {
                 "en": "6ter",
-                "fr": "6ter"
+                "fr": "6ter",
+                "de": "6ter",
+                "es": "6ter"
               }
             },
             {
               "value": "Numero23.fr",
               "label": {
                 "en": "RMC Story",
-                "fr": "RMC Story"
+                "fr": "RMC Story",
+                "de": "RMC Story",
+                "es": "RMC Story"
               }
             },
             {
               "value": "RMCDecouverte.fr",
               "label": {
                 "en": "RMC Découverte",
-                "fr": "RMC Découverte"
+                "fr": "RMC Découverte",
+                "de": "RMC Découverte",
+                "es": "RMC Découverte"
               }
             },
             {
               "value": "Cherie25.fr",
               "label": {
                 "en": "RMC Life",
-                "fr": "RMC Life"
+                "fr": "RMC Life",
+                "de": "RMC Life",
+                "es": "RMC Life"
               }
             },
             {
               "value": "LCI.fr",
               "label": {
                 "en": "LCI",
-                "fr": "LCI"
+                "fr": "LCI",
+                "de": "LCI",
+                "es": "LCI"
               }
             },
             {
               "value": "FranceInfo.fr",
               "label": {
                 "en": "franceinfo:",
-                "fr": "franceinfo:"
+                "fr": "franceinfo:",
+                "de": "franceinfo:",
+                "es": "franceinfo:"
               }
             },
             {
               "value": "ParisPremiere.fr",
               "label": {
                 "en": "Paris Première",
-                "fr": "Paris Première"
+                "fr": "Paris Première",
+                "de": "Paris Première",
+                "es": "Paris Première"
               }
             },
             {
               "value": "CanalPlusSport.fr",
               "label": {
                 "en": "Canal+ Sport",
-                "fr": "Canal+ Sport"
+                "fr": "Canal+ Sport",
+                "de": "Canal+ Sport",
+                "es": "Canal+ Sport"
               }
             },
             {
               "value": "CanalPlusCinema.fr",
               "label": {
                 "en": "Canal+ Cinéma",
-                "fr": "Canal+ Cinéma"
+                "fr": "Canal+ Cinéma",
+                "de": "Canal+ Cinéma",
+                "es": "Canal+ Cinéma"
               }
             },
             {
               "value": "PlanetePlus.fr",
               "label": {
                 "en": "Planète+",
-                "fr": "Planète+"
+                "fr": "Planète+",
+                "de": "Planète+",
+                "es": "Planète+"
               }
             }
           ]
@@ -778,11 +994,15 @@
           "type": "string",
           "label": {
             "en": "Exact title",
-            "fr": "Titre exact"
+            "fr": "Titre exact",
+            "de": "Genauer Titel",
+            "es": "Título exacto"
           },
           "description": {
             "en": "Only this programme, e.g. Koh-Lanta (exact match, case included). Empty: any programme.",
-            "fr": "Seulement ce programme, ex. Koh-Lanta (titre exact, majuscules comprises). Vide : tous les programmes."
+            "fr": "Seulement ce programme, ex. Koh-Lanta (titre exact, majuscules comprises). Vide : tous les programmes.",
+            "de": "Nur diese Sendung, z. B. Koh-Lanta (exakter Titel, Groß-/Kleinschreibung beachtet). Leer: alle Sendungen.",
+            "es": "Solo este programa, p. ej. Koh-Lanta (título exacto, mayúsculas incluidas). Vacío: cualquier programa."
           }
         }
       ],
@@ -792,7 +1012,9 @@
           "type": "string",
           "label": {
             "en": "Channel",
-            "fr": "Chaîne"
+            "fr": "Chaîne",
+            "de": "Sender",
+            "es": "Cadena"
           }
         },
         {
@@ -800,7 +1022,9 @@
           "type": "string",
           "label": {
             "en": "Title",
-            "fr": "Titre"
+            "fr": "Titre",
+            "de": "Titel",
+            "es": "Título"
           }
         },
         {
@@ -808,7 +1032,9 @@
           "type": "string",
           "label": {
             "en": "Sub-title",
-            "fr": "Sous-titre"
+            "fr": "Sous-titre",
+            "de": "Untertitel",
+            "es": "Subtítulo"
           }
         },
         {
@@ -816,7 +1042,9 @@
           "type": "string",
           "label": {
             "en": "Category",
-            "fr": "Catégorie"
+            "fr": "Catégorie",
+            "de": "Kategorie",
+            "es": "Categoría"
           }
         },
         {
@@ -824,7 +1052,9 @@
           "type": "string",
           "label": {
             "en": "Start time",
-            "fr": "Heure de début"
+            "fr": "Heure de début",
+            "de": "Beginn",
+            "es": "Hora de inicio"
           }
         },
         {
@@ -832,7 +1062,9 @@
           "type": "string",
           "label": {
             "en": "End time",
-            "fr": "Heure de fin"
+            "fr": "Heure de fin",
+            "de": "Ende",
+            "es": "Hora de fin"
           }
         },
         {
@@ -840,7 +1072,9 @@
           "type": "number",
           "label": {
             "en": "Duration (min)",
-            "fr": "Durée (min)"
+            "fr": "Durée (min)",
+            "de": "Dauer (min)",
+            "es": "Duración (min)"
           }
         }
       ]
@@ -851,11 +1085,15 @@
       "key": "get_programme",
       "label": {
         "en": "Get the TV programme of a channel",
-        "fr": "Lire le programme TV d'une chaîne"
+        "fr": "Lire le programme TV d'une chaîne",
+        "de": "TV-Programm eines Senders abrufen",
+        "es": "Obtener la programación de una cadena"
       },
       "description": {
         "en": "Returns what is on now, next and tonight.",
-        "fr": "Renvoie le programme en cours, à suivre et de ce soir."
+        "fr": "Renvoie le programme en cours, à suivre et de ce soir.",
+        "de": "Gibt zurück, was jetzt, danach und heute Abend läuft.",
+        "es": "Devuelve lo que se emite ahora, a continuación y esta noche."
       },
       "timeout_seconds": 90,
       "fields": [
@@ -864,7 +1102,9 @@
           "type": "select",
           "label": {
             "en": "Channel",
-            "fr": "Chaîne"
+            "fr": "Chaîne",
+            "de": "Sender",
+            "es": "Cadena"
           },
           "required": true,
           "options": [
@@ -872,210 +1112,270 @@
               "value": "TF1.fr",
               "label": {
                 "en": "TF1",
-                "fr": "TF1"
+                "fr": "TF1",
+                "de": "TF1",
+                "es": "TF1"
               }
             },
             {
               "value": "France2.fr",
               "label": {
                 "en": "France 2",
-                "fr": "France 2"
+                "fr": "France 2",
+                "de": "France 2",
+                "es": "France 2"
               }
             },
             {
               "value": "France3.fr",
               "label": {
                 "en": "France 3",
-                "fr": "France 3"
+                "fr": "France 3",
+                "de": "France 3",
+                "es": "France 3"
               }
             },
             {
               "value": "CanalPlus.fr",
               "label": {
                 "en": "Canal+",
-                "fr": "Canal+"
+                "fr": "Canal+",
+                "de": "Canal+",
+                "es": "Canal+"
               }
             },
             {
               "value": "France5.fr",
               "label": {
                 "en": "France 5",
-                "fr": "France 5"
+                "fr": "France 5",
+                "de": "France 5",
+                "es": "France 5"
               }
             },
             {
               "value": "M6.fr",
               "label": {
                 "en": "M6",
-                "fr": "M6"
+                "fr": "M6",
+                "de": "M6",
+                "es": "M6"
               }
             },
             {
               "value": "Arte.fr",
               "label": {
                 "en": "Arte",
-                "fr": "Arte"
+                "fr": "Arte",
+                "de": "Arte",
+                "es": "Arte"
               }
             },
             {
               "value": "W9.fr",
               "label": {
                 "en": "W9",
-                "fr": "W9"
+                "fr": "W9",
+                "de": "W9",
+                "es": "W9"
               }
             },
             {
               "value": "TMC.fr",
               "label": {
                 "en": "TMC",
-                "fr": "TMC"
+                "fr": "TMC",
+                "de": "TMC",
+                "es": "TMC"
               }
             },
             {
               "value": "NT1.fr",
               "label": {
                 "en": "TFX",
-                "fr": "TFX"
+                "fr": "TFX",
+                "de": "TFX",
+                "es": "TFX"
               }
             },
             {
               "value": "LaChaineParlementaire.fr",
               "label": {
                 "en": "LCP",
-                "fr": "LCP"
+                "fr": "LCP",
+                "de": "LCP",
+                "es": "LCP"
               }
             },
             {
               "value": "France4.fr",
               "label": {
                 "en": "France 4",
-                "fr": "France 4"
+                "fr": "France 4",
+                "de": "France 4",
+                "es": "France 4"
               }
             },
             {
               "value": "BFMTV.fr",
               "label": {
                 "en": "BFM TV",
-                "fr": "BFM TV"
+                "fr": "BFM TV",
+                "de": "BFM TV",
+                "es": "BFM TV"
               }
             },
             {
               "value": "CNews.fr",
               "label": {
                 "en": "CNews",
-                "fr": "CNews"
+                "fr": "CNews",
+                "de": "CNews",
+                "es": "CNews"
               }
             },
             {
               "value": "CStar.fr",
               "label": {
                 "en": "CStar",
-                "fr": "CStar"
+                "fr": "CStar",
+                "de": "CStar",
+                "es": "CStar"
               }
             },
             {
               "value": "Gulli.fr",
               "label": {
                 "en": "Gulli",
-                "fr": "Gulli"
+                "fr": "Gulli",
+                "de": "Gulli",
+                "es": "Gulli"
               }
             },
             {
               "value": "T18.fr",
               "label": {
                 "en": "T18",
-                "fr": "T18"
+                "fr": "T18",
+                "de": "T18",
+                "es": "T18"
               }
             },
             {
               "value": "NOVO19.fr",
               "label": {
                 "en": "NOVO19",
-                "fr": "NOVO19"
+                "fr": "NOVO19",
+                "de": "NOVO19",
+                "es": "NOVO19"
               }
             },
             {
               "value": "TF1SeriesFilms.fr",
               "label": {
                 "en": "TF1 Séries Films",
-                "fr": "TF1 Séries Films"
+                "fr": "TF1 Séries Films",
+                "de": "TF1 Séries Films",
+                "es": "TF1 Séries Films"
               }
             },
             {
               "value": "LEquipe21.fr",
               "label": {
                 "en": "L'Équipe",
-                "fr": "L'Équipe"
+                "fr": "L'Équipe",
+                "de": "L'Équipe",
+                "es": "L'Équipe"
               }
             },
             {
               "value": "6ter.fr",
               "label": {
                 "en": "6ter",
-                "fr": "6ter"
+                "fr": "6ter",
+                "de": "6ter",
+                "es": "6ter"
               }
             },
             {
               "value": "Numero23.fr",
               "label": {
                 "en": "RMC Story",
-                "fr": "RMC Story"
+                "fr": "RMC Story",
+                "de": "RMC Story",
+                "es": "RMC Story"
               }
             },
             {
               "value": "RMCDecouverte.fr",
               "label": {
                 "en": "RMC Découverte",
-                "fr": "RMC Découverte"
+                "fr": "RMC Découverte",
+                "de": "RMC Découverte",
+                "es": "RMC Découverte"
               }
             },
             {
               "value": "Cherie25.fr",
               "label": {
                 "en": "RMC Life",
-                "fr": "RMC Life"
+                "fr": "RMC Life",
+                "de": "RMC Life",
+                "es": "RMC Life"
               }
             },
             {
               "value": "LCI.fr",
               "label": {
                 "en": "LCI",
-                "fr": "LCI"
+                "fr": "LCI",
+                "de": "LCI",
+                "es": "LCI"
               }
             },
             {
               "value": "FranceInfo.fr",
               "label": {
                 "en": "franceinfo:",
-                "fr": "franceinfo:"
+                "fr": "franceinfo:",
+                "de": "franceinfo:",
+                "es": "franceinfo:"
               }
             },
             {
               "value": "ParisPremiere.fr",
               "label": {
                 "en": "Paris Première",
-                "fr": "Paris Première"
+                "fr": "Paris Première",
+                "de": "Paris Première",
+                "es": "Paris Première"
               }
             },
             {
               "value": "CanalPlusSport.fr",
               "label": {
                 "en": "Canal+ Sport",
-                "fr": "Canal+ Sport"
+                "fr": "Canal+ Sport",
+                "de": "Canal+ Sport",
+                "es": "Canal+ Sport"
               }
             },
             {
               "value": "CanalPlusCinema.fr",
               "label": {
                 "en": "Canal+ Cinéma",
-                "fr": "Canal+ Cinéma"
+                "fr": "Canal+ Cinéma",
+                "de": "Canal+ Cinéma",
+                "es": "Canal+ Cinéma"
               }
             },
             {
               "value": "PlanetePlus.fr",
               "label": {
                 "en": "Planète+",
-                "fr": "Planète+"
+                "fr": "Planète+",
+                "de": "Planète+",
+                "es": "Planète+"
               }
             }
           ]
@@ -1087,7 +1387,9 @@
           "type": "string",
           "label": {
             "en": "Channel",
-            "fr": "Chaîne"
+            "fr": "Chaîne",
+            "de": "Sender",
+            "es": "Cadena"
           }
         },
         {
@@ -1095,7 +1397,9 @@
           "type": "string",
           "label": {
             "en": "Now (title and times)",
-            "fr": "En cours (titre et horaires)"
+            "fr": "En cours (titre et horaires)",
+            "de": "Jetzt (Titel und Uhrzeiten)",
+            "es": "Ahora (título y horario)"
           }
         },
         {
@@ -1103,7 +1407,9 @@
           "type": "string",
           "label": {
             "en": "Now: title",
-            "fr": "En cours : titre"
+            "fr": "En cours : titre",
+            "de": "Jetzt: Titel",
+            "es": "Ahora: título"
           }
         },
         {
@@ -1111,7 +1417,9 @@
           "type": "string",
           "label": {
             "en": "Next (time and title)",
-            "fr": "À suivre (heure et titre)"
+            "fr": "À suivre (heure et titre)",
+            "de": "Danach (Uhrzeit und Titel)",
+            "es": "A continuación (hora y título)"
           }
         },
         {
@@ -1119,7 +1427,9 @@
           "type": "string",
           "label": {
             "en": "Next: title",
-            "fr": "À suivre : titre"
+            "fr": "À suivre : titre",
+            "de": "Danach: Titel",
+            "es": "A continuación: título"
           }
         },
         {
@@ -1127,7 +1437,9 @@
           "type": "string",
           "label": {
             "en": "Next: start time",
-            "fr": "À suivre : heure"
+            "fr": "À suivre : heure",
+            "de": "Danach: Beginn",
+            "es": "A continuación: hora de inicio"
           }
         },
         {
@@ -1135,7 +1447,9 @@
           "type": "string",
           "label": {
             "en": "Tonight (time and title)",
-            "fr": "Ce soir (heure et titre)"
+            "fr": "Ce soir (heure et titre)",
+            "de": "Heute Abend (Uhrzeit und Titel)",
+            "es": "Esta noche (hora y título)"
           }
         },
         {
@@ -1143,7 +1457,9 @@
           "type": "string",
           "label": {
             "en": "Tonight: title",
-            "fr": "Ce soir : titre"
+            "fr": "Ce soir : titre",
+            "de": "Heute Abend: Titel",
+            "es": "Esta noche: título"
           }
         },
         {
@@ -1151,7 +1467,9 @@
           "type": "string",
           "label": {
             "en": "Tonight: start time",
-            "fr": "Ce soir : heure"
+            "fr": "Ce soir : heure",
+            "de": "Heute Abend: Beginn",
+            "es": "Esta noche: hora de inicio"
           }
         }
       ]

@@ -74,7 +74,7 @@ Action : `test_guide` (« Tester le programme TV »).
 │  └─ devices/
 │     ├─ index.js                    # registre : 1 appareil par chaîne + actions
 │     └─ tvChannel.js                # appareil "chaîne TV" (3 capteurs texte)
-├─ docs/fr.md, docs/en.md            # doc utilisateur (liée depuis Gladys)
+├─ docs/{fr,en,de,es}.md             # doc utilisateur (liée depuis Gladys)
 ├─ gladys-assistant-integration.json # manifest
 └─ Dockerfile                        # Node 24 Alpine, rootfs en lecture seule
 ```

@@ -112,6 +112,8 @@ test('the test_guide action returns a multi-language message', async () => {
   const message = await ACTIONS.test_guide(gladys, { fields: {}, config });
   assert.match(message.en, /TV guide OK \(30 channels\)/);
   assert.match(message.fr, /Guide TV OK \(30 chaînes\)/);
+  assert.match(message.de, /TV-Programm OK \(30 Sender\)/);
+  assert.match(message.es, /Guía de TV OK \(30 cadenas\)/);
 });
 
 test('test_guide says the download failed, with no guide yet', async () => {
@@ -122,6 +124,8 @@ test('test_guide says the download failed, with no guide yet', async () => {
     /^TV guide download failed \(TV guide HTTP 503\)\. No guide available yet/,
   );
   assert.match(message.fr, /^Échec du téléchargement du guide TV .*Aucun guide disponible/);
+  assert.match(message.de, /^Download des TV-Programms fehlgeschlagen .*Noch kein Programm/);
+  assert.match(message.es, /^Error al descargar la guía de TV .*Todavía no hay ninguna guía/);
 });
 
 test('test_guide says the download failed and that the previous guide is still used', async () => {
@@ -150,4 +154,6 @@ test('test_guide says when the previous guide has nothing left to show', async (
   const message = await ACTIONS.test_guide(createFakeGladys(), { fields: {}, config });
   assert.match(message.en, /has ended on 2026-09-30 00:30: nothing left to show/);
   assert.match(message.fr, /s'est terminé le 2026-09-30 00:30 : plus rien à afficher/);
+  assert.match(message.de, /ist am 2026-09-30 00:30 abgelaufen/);
+  assert.match(message.es, /terminó el 2026-09-30 00:30: no queda nada que mostrar/);
 });
