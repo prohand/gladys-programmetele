@@ -5,7 +5,7 @@
   "description": {
     "en": "French TV guide (TNT): what is on now, next and tonight on your favourite channels.",
     "fr": "Programme TV (TNT) : ce qui passe maintenant, ensuite et ce soir sur vos chaînes préférées.",
-    "de": "Französisches TV-Programm (TNT): jetzt, danach und heute Abend auf Ihren Lieblingssendern.",
+    "de": "Französisches TV-Programm (TNT): jetzt, danach und heute Abend auf deinen Lieblingssendern.",
     "es": "Guía de TV francesa (TNT): lo que se emite ahora, después y esta noche en sus cadenas favoritas."
   },
   "version": "2.3.1",
@@ -27,7 +27,7 @@
       "description": {
         "en": "Pick the channels to follow: each one becomes a device with 3 sensors (now, next, tonight). The guide comes from the free XMLTV feed of xmltvfr.fr. No account, no API key.",
         "fr": "Choisissez les chaînes à suivre : chacune devient un appareil avec 3 capteurs (en cours, à suivre, ce soir). Le programme vient du flux XMLTV gratuit de xmltvfr.fr. Pas de compte, pas de clé d'API.",
-        "de": "Wählen Sie die Sender aus, die Sie verfolgen möchten: Jeder wird zu einem Gerät mit 3 Sensoren (jetzt, danach, heute Abend). Das Programm stammt aus dem kostenlosen XMLTV-Feed von xmltvfr.fr. Kein Konto, kein API-Schlüssel.",
+        "de": "Wähle die Sender aus, die du verfolgen möchtest: Jeder wird zu einem Gerät mit 3 Sensoren (jetzt, danach, heute Abend). Das Programm stammt aus dem kostenlosen XMLTV-Feed von xmltvfr.fr. Kein Konto, kein API-Schlüssel.",
         "es": "Elija las cadenas que desea seguir: cada una se convierte en un dispositivo con 3 sensores (ahora, a continuación, esta noche). La programación procede del feed XMLTV gratuito de xmltvfr.fr. Sin cuenta ni clave de API."
       },
       "links": [
@@ -357,7 +357,7 @@
       "description": {
         "en": "What is on now or tonight on your channels.",
         "fr": "Ce qui passe maintenant ou ce soir sur vos chaînes.",
-        "de": "Was jetzt oder heute Abend auf Ihren Sendern läuft.",
+        "de": "Was jetzt oder heute Abend auf deinen Sendern läuft.",
         "es": "Lo que se emite ahora o esta noche en sus cadenas."
       },
       "icon": "tv",

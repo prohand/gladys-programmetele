@@ -28,7 +28,8 @@ como máximo cada 6 horas.
 
 ## Widget del panel
 
-Añada el widget **Guía de TV** a un panel (Gladys 5.1 o posterior). Ajustes:
+Añada el widget **Guía de TV** a un panel (**Editar**, luego **Nuevo widget**;
+Gladys 5.1 o posterior). Ajustes:
 
 - **Mostrar**: _Ahora_ (con el tiempo restante) o _Esta noche (21:10)_;
 - **Cadenas**: hasta 8 cadenas; déjelo vacío para usar las cadenas de la
@@ -85,5 +86,5 @@ Internet.
 - Si una descarga falla mientras hay una guía anterior en memoria, se sigue
   usando esta (cubre varios días); se vuelve a intentar 15 minutos después. El
   botón **Probar la guía de TV** también lo indica.
-- Consulte los registros de la integración desde la interfaz de Gladys (o con
-  `docker logs` en el host) con `LOG_LEVEL=debug` para ver todos los detalles.
+- Consulte los registros de la integración en la pestaña **Registros** de la
+  integración (o con `docker logs` en el host) con `LOG_LEVEL=debug` para ver todos los detalles.

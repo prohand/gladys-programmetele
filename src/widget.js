@@ -40,7 +40,7 @@ const TEXTS = {
   noChannel: {
     en: 'No channel selected: pick channels in the widget or integration settings.',
     fr: "Aucune chaîne choisie : cochez des chaînes dans le widget ou la configuration de l'intégration.",
-    de: 'Kein Sender ausgewählt: Wählen Sie Sender im Widget oder in der Konfiguration der Integration aus.',
+    de: 'Kein Sender ausgewählt: Wähle Sender im Widget oder in der Konfiguration der Integration aus.',
     es: 'Ninguna cadena seleccionada: elija cadenas en el widget o en la configuración de la integración.',
   },
   more: {

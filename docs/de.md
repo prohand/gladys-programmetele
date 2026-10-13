@@ -3,7 +3,7 @@
 Diese Integration zeigt das TV-Programm der französischen TNT-Sender in Gladys:
 was **jetzt** läuft, was **danach** kommt und was **heute Abend** läuft.
 
-## Was Sie bekommen
+## Was du bekommst
 
 Ein Gerät pro ausgewähltem Sender (zum Beispiel „Programme TV TF1“) mit 3
 Textsensoren:
@@ -18,23 +18,24 @@ Die Uhrzeiten werden immer in der Pariser Zeitzone angezeigt.
 
 ## Konfiguration
 
-1. Öffnen Sie den Tab **Konfiguration** der Integration.
-2. Wählen Sie die **Sender** aus, die Sie verfolgen möchten (30 TNT-Sender verfügbar).
-3. Speichern Sie: Die Geräte erscheinen im Tab **Entdecken** und können hinzugefügt werden.
+1. Öffne den Tab **Konfiguration** der Integration.
+2. Wähle die **Sender** aus, die du verfolgen möchtest (30 TNT-Sender verfügbar).
+3. Speichere: Die Geräte erscheinen im Tab **Entdecken** und können hinzugefügt werden.
 
 Die Sensoren werden jede Minute aktualisiert. Das vollständige Programm (8 Tage) wird
 höchstens alle 6 Stunden heruntergeladen.
 
 ## Dashboard-Widget
 
-Fügen Sie das Widget **TV-Programm** zu einem Dashboard hinzu (Gladys 5.1 oder neuer).
+Füge das Widget **TV-Programm** zu einem Dashboard hinzu (**Bearbeiten**, dann
+**Neues Widget**; Gladys 5.1 oder neuer).
 Einstellungen:
 
 - **Anzeigen**: _Jetzt_ (mit der verbleibenden Zeit) oder _Heute Abend (21:10)_;
 - **Sender**: bis zu 8 Sender; leer lassen, um die Sender aus der Konfiguration
   der Integration zu verwenden.
 
-Tippen Sie auf eine Zeile, um die Zusammenfassung der Sendung zu lesen. Das Widget
+Tippe auf eine Zeile, um die Zusammenfassung der Sendung zu lesen. Das Widget
 aktualisiert sich selbst, wenn eine Sendung endet.
 
 ## Szenen
@@ -85,5 +86,5 @@ Internetzugang.
 - Schlägt ein Download fehl, während ein älteres Programm im Speicher ist, wird
   dieses weiter verwendet (es deckt mehrere Tage ab); 15 Minuten später erfolgt
   ein neuer Versuch. Die Schaltfläche **TV-Programm testen** zeigt das ebenfalls an.
-- Prüfen Sie die Protokolle der Integration in der Gladys-Oberfläche (oder mit
+- Prüfe die Protokolle der Integration im Tab **Protokolle** (oder mit
   `docker logs` auf dem Host) mit `LOG_LEVEL=debug`, um alle Details zu sehen.

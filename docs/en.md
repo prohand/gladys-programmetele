@@ -20,14 +20,16 @@ Times are always displayed in the Paris time zone.
 
 1. Open the **Configuration** tab of the integration.
 2. Tick the **channels** to follow (30 TNT channels available).
-3. Save: the devices show up in the **Discovery** tab, ready to be added.
+3. Save: the devices show up in the **Discover** tab, ready to be added with
+   **Add to Gladys**.
 
 The sensors are updated every minute. The full guide (8 days) is downloaded
 at most every 6 hours.
 
 ## Dashboard widget
 
-Add the **TV guide** widget to a dashboard (Gladys 5.1 or later). Settings:
+Add the **TV guide** widget to a dashboard (**Edit**, then **New widget**;
+Gladys 5.1 or later). Settings:
 
 - **Show**: _Now_ (with the time left) or _Tonight (21:10)_;
 - **Channels**: up to 8 channels; leave empty to use the channels of the
@@ -83,5 +85,5 @@ The guide comes from the free XMLTV feed of [xmltvfr.fr](https://xmltvfr.fr)
 - If a download fails while an older guide is in memory, that one keeps being
   used (it covers several days); a new try is made 15 minutes later. The
   **Test the TV guide** button says so too.
-- Check the integration logs from the Gladys UI (or `docker logs` on the
-  host) with `LOG_LEVEL=debug` for the full details.
+- Check the integration logs in the **Logs** tab of the integration (or
+  `docker logs` on the host) with `LOG_LEVEL=debug` for the full details.
