@@ -115,7 +115,8 @@ for the SDK, handlers included, so `src/integration.js` is tested without a Glad
 
 - Prettier owns formatting (`.prettierrc.json`); ESLint catches real mistakes.
 - Comments explain **why**, in English. User-facing strings (action results, statuses, widget
-  texts) are bilingual `{ en, fr }`; device and feature names are French.
-- User docs live in `docs/fr.md` and `docs/en.md` (re-hosted by Gladys): keep both in sync.
+  texts) are `{ en, fr, de, es }`; device and feature names are French.
+- User docs live in `docs/en.md`, `docs/fr.md`, `docs/de.md` and `docs/es.md` (re-hosted by
+  Gladys): keep them in sync.
 - The rootfs is read-only in the Gladys sandbox: do not write files (no volume is declared).
 - The Docker image installs with `npm ci --omit=dev --ignore-scripts`: the lockfile is required.

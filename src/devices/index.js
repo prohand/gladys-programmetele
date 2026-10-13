@@ -61,6 +61,8 @@ export const ACTIONS = {
     return {
       en: `TV guide OK (${guide.size} channels). Now on ${channel.name}: ${formatCurrent(current)}`,
       fr: `Guide TV OK (${guide.size} chaînes). En ce moment sur ${channel.name} : ${formatCurrent(current)}`,
+      de: `TV-Programm OK (${guide.size} Sender). Jetzt auf ${channel.name}: ${formatCurrent(current)}`,
+      es: `Guía de TV OK (${guide.size} cadenas). Ahora en ${channel.name}: ${formatCurrent(current)}`,
     };
   },
 };
@@ -70,12 +72,16 @@ function downloadFailedMessage(err) {
   const failed = {
     en: `TV guide download failed (${err.message}).`,
     fr: `Échec du téléchargement du guide TV (${err.message}).`,
+    de: `Download des TV-Programms fehlgeschlagen (${err.message}).`,
+    es: `Error al descargar la guía de TV (${err.message}).`,
   };
   const info = guideInfo();
   if (!info) {
     return {
       en: `${failed.en} No guide available yet: a new try is made automatically in a few minutes.`,
       fr: `${failed.fr} Aucun guide disponible pour l'instant : un nouvel essai est fait automatiquement dans quelques minutes.`,
+      de: `${failed.de} Noch kein Programm verfügbar: In einigen Minuten erfolgt automatisch ein neuer Versuch.`,
+      es: `${failed.es} Todavía no hay ninguna guía disponible: se volverá a intentar automáticamente en unos minutos.`,
     };
   }
   const fetchedAt = formatDateTime(info.fetchedAt);
@@ -84,10 +90,14 @@ function downloadFailedMessage(err) {
     return {
       en: `${failed.en} The previous guide (downloaded ${fetchedAt}) has ended on ${until}: nothing left to show.`,
       fr: `${failed.fr} L'ancien guide (téléchargé le ${fetchedAt}) s'est terminé le ${until} : plus rien à afficher.`,
+      de: `${failed.de} Das vorherige Programm (heruntergeladen am ${fetchedAt}) ist am ${until} abgelaufen: Es gibt nichts mehr anzuzeigen.`,
+      es: `${failed.es} La guía anterior (descargada el ${fetchedAt}) terminó el ${until}: no queda nada que mostrar.`,
     };
   }
   return {
     en: `${failed.en} The previous guide (downloaded ${fetchedAt}, programmes until ${until}) is still used.`,
     fr: `${failed.fr} L'ancien guide (téléchargé le ${fetchedAt}, programmes jusqu'au ${until}) reste utilisé.`,
+    de: `${failed.de} Das vorherige Programm (heruntergeladen am ${fetchedAt}, Sendungen bis ${until}) wird weiter verwendet.`,
+    es: `${failed.es} Se sigue usando la guía anterior (descargada el ${fetchedAt}, programas hasta el ${until}).`,
   };
 }

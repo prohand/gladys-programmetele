@@ -107,10 +107,10 @@ test('a failed download at connection neither stops the watcher nor throws', asy
 });
 
 test('the download and the publication failures have different messages', () => {
-  const messages = Object.values(STATUS_MESSAGES).map((message) => message.fr);
-  assert.equal(new Set(messages).size, messages.length);
-  for (const message of Object.values(STATUS_MESSAGES)) {
-    assert.ok(message.en && message.fr);
+  for (const language of ['en', 'fr', 'de', 'es']) {
+    const messages = Object.values(STATUS_MESSAGES).map((message) => message[language]);
+    assert.ok(messages.every(Boolean), `every status message has a "${language}" text`);
+    assert.equal(new Set(messages).size, messages.length);
   }
 });
 

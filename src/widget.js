@@ -31,19 +31,37 @@ const TTL_MAX = 3600;
 const TTL_TONIGHT = 1800;
 
 const TEXTS = {
-  noProgramme: { en: 'No programme', fr: 'Aucun programme' },
+  noProgramme: {
+    en: 'No programme',
+    fr: 'Aucun programme',
+    de: 'Keine Sendung',
+    es: 'Sin programa',
+  },
   noChannel: {
     en: 'No channel selected: pick channels in the widget or integration settings.',
     fr: "Aucune chaîne choisie : cochez des chaînes dans le widget ou la configuration de l'intégration.",
+    de: 'Kein Sender ausgewählt: Wähle Sender im Widget oder in der Konfiguration der Integration aus.',
+    es: 'Ninguna cadena seleccionada: elija cadenas en el widget o en la configuración de la integración.',
   },
   more: {
     en: (n) => `+${n} more channel(s), see the devices.`,
     fr: (n) => `+${n} autre(s) chaîne(s), voir les appareils.`,
+    de: (n) => `+${n} weitere(r) Sender, siehe Geräte.`,
+    es: (n) => `+${n} cadena(s) más, consulte los dispositivos.`,
   },
-  left: { en: (m) => `${m} min left`, fr: (m) => `encore ${m} min` },
+  left: {
+    en: (m) => `${m} min left`,
+    fr: (m) => `encore ${m} min`,
+    de: (m) => `noch ${m} Min.`,
+    es: (m) => `quedan ${m} min`,
+  },
 };
 
-const lang = (language) => (language === 'fr' ? 'fr' : 'en');
+// Languages the widget texts are written in: the core sends the reader's
+// language, anything else falls back to English.
+export const WIDGET_LANGUAGES = ['en', 'fr', 'de', 'es'];
+
+export const lang = (language) => (WIDGET_LANGUAGES.includes(language) ? language : 'en');
 
 /**
  * Channels shown by a widget instance: its own `channels` setting, or the
@@ -164,6 +182,8 @@ export async function getTvGuideWidget(
     return textCard(UNAVAILABLE_TTL_SECONDS, {
       en: 'TV guide unavailable for now, a new try is made in a few minutes.',
       fr: 'Programme TV indisponible pour le moment, nouvel essai dans quelques minutes.',
+      de: 'TV-Programm derzeit nicht verfügbar, ein neuer Versuch erfolgt in einigen Minuten.',
+      es: 'Guía de TV no disponible por el momento, se volverá a intentar en unos minutos.',
     });
   } finally {
     clearTimeout(timer);
@@ -172,6 +192,8 @@ export async function getTvGuideWidget(
     return textCard(LOADING_TTL_SECONDS, {
       en: 'Downloading the TV guide…',
       fr: 'Téléchargement du programme TV…',
+      de: 'TV-Programm wird heruntergeladen…',
+      es: 'Descargando la guía de TV…',
     });
   }
   return buildWidgetContent(guide, { settings, language, config });

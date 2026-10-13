@@ -9,7 +9,9 @@ import {
   MAX_ITEMS,
   MOMENT,
   UNAVAILABLE_TTL_SECONDS,
+  lang,
   widgetChannels,
+  WIDGET_LANGUAGES,
 } from '../src/widget.js';
 import { parseXmltv, resetGuideCache } from '../src/guide.js';
 import { normalizeConfig } from '../src/config.js';
@@ -73,6 +75,29 @@ test('more than 8 channels: 8 rows and a caption', () => {
   assert.match(content.components[1].text, /\+22 autre/);
 });
 
+test('the widget speaks the language of the reader, English for any other', () => {
+  assert.deepEqual(WIDGET_LANGUAGES, ['en', 'fr', 'de', 'es']);
+  for (const language of WIDGET_LANGUAGES) {
+    assert.equal(lang(language), language);
+  }
+  assert.equal(lang('it'), 'en');
+  assert.equal(lang(undefined), 'en');
+
+  const de = buildWidgetContent(guide, { settings: {}, language: 'de', config, now });
+  assert.deepEqual(validateWidgetContent(de), []);
+  assert.deepEqual(de.components[0].items[0].badge, { text: 'noch 10 Min.', color: 'primary' });
+  const es = buildWidgetContent(guide, {
+    settings: { moment: MOMENT.TONIGHT },
+    language: 'es',
+    config,
+    now,
+  });
+  assert.deepEqual(validateWidgetContent(es), []);
+  assert.deepEqual(es.components[0].items[1], { title: 'Sin programa', subtitle: 'M6' });
+  const it = buildWidgetContent(guide, { settings: {}, language: 'it', config, now });
+  assert.deepEqual(it.components[0].items[0].badge, { text: '10 min left', color: 'primary' });
+});
+
 test('no channel: a valid text explains what to do', () => {
   const content = buildWidgetContent(guide, { config: normalizeConfig({ channels: [] }), now });
   assert.deepEqual(validateWidgetContent(content), []);
@@ -110,6 +135,8 @@ test('a failed first download gives an "unavailable" card with a short TTL, neve
       assert.equal(content.ttl_seconds, UNAVAILABLE_TTL_SECONDS);
       assert.match(content.components[0].text.fr, /indisponible/);
       assert.match(content.components[0].text.en, /unavailable/);
+      assert.match(content.components[0].text.de, /nicht verfügbar/);
+      assert.match(content.components[0].text.es, /no disponible/);
     }
     assert.ok(UNAVAILABLE_TTL_SECONDS <= 120);
   } finally {

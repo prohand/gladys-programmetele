@@ -129,6 +129,53 @@ test('section fields are purely presentational', () => {
   }
 });
 
+// Every text a user reads is offered in the four languages of the Gladys UI.
+const LANGUAGES = ['en', 'fr', 'de', 'es'];
+
+function multiLanguageTexts(node, path = '$', found = []) {
+  if (Array.isArray(node)) {
+    node.forEach((item, i) => multiLanguageTexts(item, `${path}[${i}]`, found));
+  } else if (node && typeof node === 'object') {
+    if (typeof node.en === 'string') {
+      found.push({ path, text: node });
+    } else {
+      for (const [key, value] of Object.entries(node)) {
+        multiLanguageTexts(value, `${path}.${key}`, found);
+      }
+    }
+  }
+  return found;
+}
+
+test('every multi-language text carries en, fr, de and es', () => {
+  const texts = multiLanguageTexts(manifest);
+  assert.ok(texts.length > 0);
+  for (const { path, text } of texts) {
+    assert.deepEqual(Object.keys(text), LANGUAGES, `${path} languages`);
+    for (const language of LANGUAGES) {
+      assert.equal(typeof text[language], 'string', `${path}.${language}`);
+      assert.ok(text[language].trim().length > 0, `${path}.${language} is empty`);
+    }
+  }
+});
+
+test('texts respect the store length limits in every language', () => {
+  const check = (text, min, max, what) => {
+    for (const language of LANGUAGES) {
+      const { length } = text[language];
+      assert.ok(length >= min && length <= max, `${what}.${language}: ${length} characters`);
+    }
+  };
+  check(manifest.description, 10, 100, 'description');
+  for (const widget of manifest.widgets) {
+    check(widget.label, 3, 30, `widget ${widget.key} label`);
+    check(widget.description, 0, 100, `widget ${widget.key} description`);
+  }
+  for (const section of manifest.config_schema.filter((f) => f.type === 'section')) {
+    check(section.description, 0, 1000, `section ${section.key}`);
+  }
+});
+
 test('the manifest declares the transports used (the TV guide is downloaded from xmltvfr.fr)', () => {
   assert.deepEqual(manifest.transports, ['cloud']);
 });

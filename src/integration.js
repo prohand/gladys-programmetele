@@ -36,18 +36,26 @@ export const STATUS_MESSAGES = {
   [STATUS.GUIDE_UNAVAILABLE]: {
     en: 'Cannot download the TV guide, check the integration logs.',
     fr: 'Impossible de télécharger le programme TV, consultez les logs.',
+    de: 'Das TV-Programm kann nicht heruntergeladen werden, prüfe die Protokolle der Integration.',
+    es: 'No se puede descargar la guía de TV, consulte los registros de la integración.',
   },
   [STATUS.GUIDE_OUTDATED]: {
     en: 'The TV guide is out of date: its last programmes have ended and no newer guide could be downloaded. Check the integration logs.',
     fr: "Le programme TV est périmé : ses derniers programmes sont terminés et aucun programme plus récent n'a pu être téléchargé. Consultez les logs.",
+    de: 'Das TV-Programm ist veraltet: Seine letzten Sendungen sind vorbei und es konnte kein neueres Programm heruntergeladen werden. Prüfe die Protokolle der Integration.',
+    es: 'La guía de TV está desactualizada: sus últimos programas han terminado y no se ha podido descargar ninguna guía más reciente. Consulte los registros de la integración.',
   },
   [STATUS.DEVICES_REFUSED]: {
     en: 'Gladys refused the TV channel devices, check the integration logs.',
     fr: 'Gladys a refusé les appareils des chaînes, consultez les logs.',
+    de: 'Gladys hat die Geräte der TV-Sender abgelehnt, prüfe die Protokolle der Integration.',
+    es: 'Gladys ha rechazado los dispositivos de las cadenas, consulte los registros de la integración.',
   },
   [STATUS.STATES_REFUSED]: {
     en: 'Cannot send the programmes to Gladys, check the integration logs.',
     fr: "Impossible d'envoyer les programmes à Gladys, consultez les logs.",
+    de: 'Die Sendungen können nicht an Gladys gesendet werden, prüfe die Protokolle der Integration.',
+    es: 'No se pueden enviar los programas a Gladys, consulte los registros de la integración.',
   },
 };
 
