@@ -6,6 +6,10 @@ All notable changes to this integration are documented here. The format follows
 
 ## [Unreleased]
 
+## [2.4.1] - 2026-10-23
+
+- Maintenance release, no functional change.
+
 ## [2.4.0] - 2026-10-13
 
 ### Added
@@ -97,7 +101,8 @@ First public release.
 
 - Poll_frequency en millisecondes, valeurs acceptées par Gladys
 
-[Unreleased]: https://github.com/prohand/gladys-programmetele/compare/v2.4.0...HEAD
+[Unreleased]: https://github.com/prohand/gladys-programmetele/compare/v2.4.1...HEAD
+[2.4.1]: https://github.com/prohand/gladys-programmetele/compare/v2.4.0...v2.4.1
 [2.4.0]: https://github.com/prohand/gladys-programmetele/compare/v2.3.1...v2.4.0
 [2.3.1]: https://github.com/prohand/gladys-programmetele/compare/v2.3.0...v2.3.1
 [2.3.0]: https://github.com/prohand/gladys-programmetele/compare/v2.2.2...v2.3.0
