@@ -6,6 +6,8 @@ All notable changes to this integration are documented here. The format follows
 
 ## [Unreleased]
 
+## [2.5.0] - 2026-10-25
+
 ### Added
 
 - Catalog search keywords (télé, guide TV, TF1, M6, Arte…), the country (France) and the **leisure** shelf in the manifest, so the Gladys catalog finds the integration and shows it to French instances.
@@ -112,7 +114,8 @@ First public release.
 
 - Poll_frequency en millisecondes, valeurs acceptées par Gladys
 
-[Unreleased]: https://github.com/prohand/gladys-programmetele/compare/v2.4.1...HEAD
+[Unreleased]: https://github.com/prohand/gladys-programmetele/compare/v2.5.0...HEAD
+[2.5.0]: https://github.com/prohand/gladys-programmetele/compare/v2.4.1...v2.5.0
 [2.4.1]: https://github.com/prohand/gladys-programmetele/compare/v2.4.0...v2.4.1
 [2.4.0]: https://github.com/prohand/gladys-programmetele/compare/v2.3.1...v2.4.0
 [2.3.1]: https://github.com/prohand/gladys-programmetele/compare/v2.3.0...v2.3.1
