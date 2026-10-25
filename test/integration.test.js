@@ -1,6 +1,11 @@
 import { test, afterEach } from 'node:test';
 import assert from 'node:assert/strict';
-import { createIntegration, STATUS, STATUS_MESSAGES } from '../src/integration.js';
+import {
+  createIntegration,
+  STATE_HEARTBEAT_MS,
+  STATUS,
+  STATUS_MESSAGES,
+} from '../src/integration.js';
 import { tvChannel } from '../src/devices/tvChannel.js';
 import { findChannel } from '../src/channels.js';
 import { resetGuideCache } from '../src/guide.js';
@@ -149,6 +154,29 @@ test('the refresh loop reports the status, not only the connection', async () =>
   await integration.refreshCycle();
   assert.deepEqual(lastStatus(gladys), { connected: true, message: undefined });
   assert.equal(gladys.connectionStatuses.length, 2, 'one status per change');
+});
+
+test('only the texts that changed are published again, and everything after a reconnection', async (t) => {
+  stubGuideDownload(currentGuide());
+  t.mock.timers.enable({ apis: ['Date'], now: Date.now() });
+  const { gladys, integration } = setup();
+  await integration.onConnected();
+  assert.equal(gladys.published.length, 3);
+
+  // A minute later the programmes are the same: nothing is sent.
+  t.mock.timers.tick(60_000);
+  await integration.refreshCycle();
+  assert.equal(gladys.published.length, 3);
+
+  // Past the heartbeat, the unchanged texts are sent again.
+  t.mock.timers.tick(STATE_HEARTBEAT_MS);
+  await integration.refreshCycle();
+  assert.equal(gladys.published.length, 6);
+
+  // A reconnection forgets what was sent: Gladys may have lost it.
+  t.mock.timers.tick(60_000);
+  await integration.onConnected();
+  assert.equal(gladys.published.length, 9);
 });
 
 test('a poll publishes the channel once a minute, and fails with the guide', async () => {

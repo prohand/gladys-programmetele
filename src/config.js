@@ -10,6 +10,7 @@
 // rest of the code never has to deal with `undefined`.
 // -----------------------------------------------------------------------------
 
+import { DEVICE_POLL_FREQUENCIES } from '@gladysassistant/integration-sdk';
 import { findChannel } from './channels.js';
 
 // Refresh interval of the sensors, in MILLISECONDS. Gladys only accepts a few
@@ -17,7 +18,7 @@ import { findChannel } from './channels.js';
 // 1 s, 2 s, 10 s, 15 s, 30 s, 1 min) and rejects the whole discovery otherwise.
 // 1 min is the slowest, and faster is useless for a TV guide: it is fixed and
 // not offered in the config.
-export const POLL_FREQUENCY = 60_000;
+export const POLL_FREQUENCY = DEVICE_POLL_FREQUENCIES.EVERY_MINUTES;
 
 // Defaults: they MUST stay consistent with the `default` values declared in the
 // `config_schema` of the manifest.

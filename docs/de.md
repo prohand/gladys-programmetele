@@ -1,7 +1,8 @@
 # Programme Télé (französisches TV-Programm)
 
 Diese Integration zeigt das TV-Programm der französischen TNT-Sender in Gladys:
-was **jetzt** läuft, was **danach** kommt und was **heute Abend** läuft.
+was **jetzt** läuft, was **danach** kommt und was **heute Abend** läuft. Sie benötigt
+**Gladys 5.3.0 oder neuer**.
 
 ## Was du bekommst
 

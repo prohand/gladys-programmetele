@@ -2,6 +2,7 @@
 
 Intégration externe pour [Gladys Assistant](https://gladysassistant.com) : le
 programme TV des chaînes de la TNT française (en cours, à suivre, ce soir).
+Nécessite **Gladys ≥ 5.3.0** (mots-clés et pays du catalogue).
 
 Basée sur le template officiel
 [`integration-template-js`](https://github.com/GladysAssistant/integration-template-js)
@@ -19,6 +20,8 @@ et le SDK [`@gladysassistant/integration-sdk`](https://github.com/GladysAssistan
   conditionnelle (`If-None-Match` / `If-Modified-Since` : un 304 garde le guide
   actuel). Après un échec : nouvel essai 15 min plus tard, l'ancien guide reste
   utilisé ; sans aucun guide, nouvel essai 2 min plus tard.
+- Seuls les textes qui ont changé sont envoyés à Gladys (`publishChangedStates`),
+  et chacun de nouveau toutes les 30 min, ou après une reconnexion.
 - Un téléchargement est plafonné (20 Mo reçus, 100 Mo de XML) et refusé s'il
   est incomplet (pas de `</tv>` final, ou moins de la moitié des chaînes
   connues) : l'ancien guide reste alors utilisé.
