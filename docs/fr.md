@@ -2,7 +2,7 @@
 
 Cette intégration affiche le programme TV des chaînes de la TNT française dans
 Gladys : ce qui passe **en ce moment**, le programme **à suivre** et celui de
-**ce soir**.
+**ce soir**. Elle nécessite **Gladys 5.3.0 ou plus**.
 
 ## Ce que vous obtenez
 

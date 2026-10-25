@@ -31,12 +31,71 @@ test('every manifest action has a registered handler, and the other way round', 
   assert.deepEqual(declared, Object.keys(ACTIONS).sort());
 });
 
-test('widgets and scene declarations require Gladys >= 5.1.0', () => {
-  assert.ok(manifest.categories.length >= 1 && manifest.categories.length <= 3);
+// The store's catalog shelves (Gladys 5.3 added the last four). An unknown key
+// is dropped by the indexer with a mere warning, so a typo silently costs a shelf.
+const CATEGORY_VOCABULARY = [
+  'climate',
+  'lighting',
+  'energy',
+  'security',
+  'multimedia',
+  'appliances',
+  'environment',
+  'protocols',
+  'network',
+  'notifications',
+  'assistants',
+  'services',
+  'transport',
+  'vehicles',
+  'servers',
+  'leisure',
+];
+
+// The minimum of `gladys_version`, compared as numbers: an older core rejects
+// any manifest field it does not know, so every field moves with its floor.
+function floorAtLeast(major, minor) {
   const minVersion = manifest.gladys_version.match(/>=\s*(\d+)\.(\d+)\.\d+/);
   assert.ok(minVersion, 'gladys_version must declare a minimum version');
-  const [, major, minor] = minVersion.map(Number);
-  assert.ok(major > 5 || (major === 5 && minor >= 1), manifest.gladys_version);
+  const [, floorMajor, floorMinor] = minVersion.map(Number);
+  return floorMajor > major || (floorMajor === major && floorMinor >= minor);
+}
+
+test('widgets and scene declarations require Gladys >= 5.1.0', () => {
+  assert.ok(floorAtLeast(5, 1), manifest.gladys_version);
+});
+
+test('categories: 1 to 3 shelves of the store vocabulary (Gladys >= 4.86.0)', () => {
+  assert.ok(floorAtLeast(4, 86), manifest.gladys_version);
+  assert.ok(manifest.categories.length >= 1 && manifest.categories.length <= 3);
+  assert.equal(new Set(manifest.categories).size, manifest.categories.length);
+  for (const category of manifest.categories) {
+    assert.ok(CATEGORY_VOCABULARY.includes(category), `unknown category ${category}`);
+  }
+});
+
+test('keywords and countries require Gladys >= 5.3.0', () => {
+  for (const key of ['keywords', 'countries', 'music']) {
+    if (manifest[key] !== undefined) {
+      assert.ok(floorAtLeast(5, 3), `${key} needs Gladys 5.3.0`);
+    }
+  }
+});
+
+test('keywords: 1 to 10 unique search terms of 2 to 30 characters', () => {
+  assert.ok(manifest.keywords.length >= 1 && manifest.keywords.length <= 10);
+  const normalized = manifest.keywords.map((keyword) => keyword.trim().toLowerCase());
+  assert.equal(new Set(normalized).size, normalized.length, 'duplicate keyword');
+  for (const keyword of normalized) {
+    assert.ok(keyword.length >= 2 && keyword.length <= 30, keyword);
+  }
+});
+
+test('countries: the TNT guide is French', () => {
+  assert.deepEqual(manifest.countries, ['FR']);
+  for (const country of manifest.countries) {
+    assert.match(country, /^[A-Z]{2}$/);
+  }
 });
 
 test('config_schema defaults stay consistent with DEFAULT_CONFIG', () => {

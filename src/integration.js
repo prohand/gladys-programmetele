@@ -64,6 +64,12 @@ export const STATUS_MESSAGES = {
 // them.
 const MIN_REFRESH_GAP_MS = 50_000;
 
+// The sensors are rebuilt every minute, but a programme lasts much longer: only
+// the texts that changed are sent (the host API takes 300 states a minute, and
+// 30 channels are 90 states), plus every text once in a while so a programme
+// that runs for hours never looks stale in Gladys.
+export const STATE_HEARTBEAT_MS = 30 * 60_000;
+
 /**
  * Wire the integration to an SDK instance.
  * @param {object} gladys SDK instance (or the fake one of the tests)
@@ -143,11 +149,10 @@ export function createIntegration(gladys, { watcher } = {}) {
       throw err;
     }
     try {
-      // 3 states per channel: stay under the 100 states per request limit.
+      // 3 states per channel. The SDK sends only the texts that changed, splits
+      // the batches at 100 states, and remembers a value once Gladys accepted it.
       const states = channels.flatMap((channel) => tvChannel.buildStates(gladys, channel, guide));
-      for (let i = 0; i < states.length; i += 99) {
-        await gladys.publishStates(states.slice(i, i + 99));
-      }
+      await gladys.publishChangedStates(states, { heartbeat: STATE_HEARTBEAT_MS });
     } catch (err) {
       await reportStatus(STATUS.STATES_REFUSED);
       throw err;
@@ -167,7 +172,8 @@ export function createIntegration(gladys, { watcher } = {}) {
   }
 
   // One cycle of the integration's own loop. Gladys only polls a device whose
-  // row carries `should_poll: true`, read once when the device is created:
+  // row carries `should_poll: true`, read once when the device is created (a
+  // core older than 5.3 does not set it from `poll_frequency` by itself):
   // every channel created before that flag was published would stay frozen
   // forever without it. Never throws: it runs in a timer.
   async function refreshCycle() {
@@ -210,6 +216,10 @@ export function createIntegration(gladys, { watcher } = {}) {
     // in `gladys.config`, right before emitting 'connected': no need to ask
     // for it a second time.
     config = normalizeConfig(gladys.config ?? {});
+    // Gladys may have restarted, or lost values, while we were away: send
+    // every text again. The SDK forgets them on device events, never on a
+    // reconnection.
+    gladys.forgetPublishedStates();
     await publishDevices();
     // Fill the sensors right away, without waiting for the first poll.
     try {

@@ -6,6 +6,17 @@ All notable changes to this integration are documented here. The format follows
 
 ## [Unreleased]
 
+### Added
+
+- Catalog search keywords (télé, guide TV, TF1, M6, Arte…), the country (France) and the **leisure** shelf in the manifest, so the Gladys catalog finds the integration and shows it to French instances.
+
+### Changed
+
+- Requires Gladys 5.3.0 or later (the version that accepts the catalog keywords and countries).
+- `@gladysassistant/integration-sdk` 0.16.
+- Only the programmes that changed are sent to Gladys every minute, and each one again every 30 minutes or after a reconnection, instead of every text of every channel every minute.
+- The release workflow runs the store admission checks once the image is published; the pull request checks skip the image only.
+
 ## [2.4.1] - 2026-10-23
 
 - Maintenance release, no functional change.

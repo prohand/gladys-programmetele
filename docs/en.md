@@ -1,7 +1,8 @@
 # Programme Télé (French TV guide)
 
 This integration shows the TV guide of the French TNT channels in Gladys:
-what is on **now**, what comes **next** and what is on **tonight**.
+what is on **now**, what comes **next** and what is on **tonight**. It requires
+**Gladys 5.3.0 or later**.
 
 ## What you get
 

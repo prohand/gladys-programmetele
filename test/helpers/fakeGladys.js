@@ -4,6 +4,9 @@
 // It reproduces the only surface the device modules rely on:
 //   - externalIds(type, platformId) -> { device, feature(key) }
 //   - publishStates                  -> record calls so tests can assert them
+//   - publishChangedStates           -> the SDK's dedupe (same value skipped,
+//                                       re-sent past `heartbeat`), then
+//                                       publishStates; forgetPublishedStates
 //   - setConnectionStatus            -> record calls so tests can assert them
 //   - publishSceneEvent              -> record calls so tests can assert them
 //   - requestWidgetRefresh           -> record calls so tests can assert them
@@ -22,6 +25,8 @@ export function createFakeGladys() {
   const widgetRefreshes = [];
   const discovered = [];
   const handlers = {};
+  // Last value accepted per feature, as the SDK remembers it.
+  const lastPublished = new Map();
 
   return {
     published,
@@ -48,6 +53,41 @@ export function createFakeGladys() {
           state: s.state,
           text: s.text,
         });
+      }
+    },
+
+    async publishChangedStates(states, { heartbeat } = {}) {
+      const now = Date.now();
+      const changed = states.filter((s) => {
+        const last = lastPublished.get(s.device_feature_external_id);
+        if (!last || last.state !== s.state || last.text !== s.text) {
+          return true;
+        }
+        return heartbeat !== undefined && now - last.at >= heartbeat;
+      });
+      if (changed.length > 0) {
+        // Remembered only once accepted: a refusal throws and is sent again.
+        await this.publishStates(changed);
+        for (const s of changed) {
+          lastPublished.set(s.device_feature_external_id, {
+            state: s.state,
+            text: s.text,
+            at: now,
+          });
+        }
+      }
+      return { success: true, count: changed.length };
+    },
+
+    forgetPublishedStates(externalId) {
+      if (externalId === undefined) {
+        lastPublished.clear();
+        return;
+      }
+      for (const key of [...lastPublished.keys()]) {
+        if (key === externalId || key.startsWith(`${externalId}:`)) {
+          lastPublished.delete(key);
+        }
       }
     },
 

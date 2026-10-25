@@ -2,7 +2,7 @@
 
 Esta integración muestra en Gladys la programación de las cadenas de la TNT
 francesa: lo que se emite **ahora**, lo que viene **a continuación** y lo que se
-emite **esta noche**.
+emite **esta noche**. Requiere **Gladys 5.3.0 o posterior**.
 
 ## Qué obtiene
 

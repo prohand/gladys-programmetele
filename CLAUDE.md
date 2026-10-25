@@ -83,8 +83,12 @@ src/scenes.js             scene trigger `programme_started` + scene action `get_
   searches ALL channels, so a device whose channel was unticked still resolves.
 - **`poll_frequency` is fixed at 60 000 ms** (`POLL_FREQUENCY`) and is not a config field: Gladys
   only accepts 1 s / 2 s / 10 s / 15 s / 30 s / 60 s and rejects the whole discovery otherwise.
-  Gladys only schedules a device whose row also carries `should_poll: true` (default `false` in
-  the core).
+  Gladys only schedules a device whose row also carries `should_poll: true`: Gladys 5.3 sets it
+  itself from `poll_frequency`, older cores default it to `false`, so the devices keep publishing
+  it and the integration's own loop covers the devices created without it.
+- **Only changed texts are published** (`publishChangedStates`, heartbeat every 30 min,
+  `STATE_HEARTBEAT_MS`): the sensors are rebuilt every minute but a programme lasts much longer.
+  `forgetPublishedStates()` runs on every `connected`, where Gladys may have lost the values.
 - **Every feature declares `min`/`max`** (`0`/`0` for text): they are NOT NULL in Gladys.
 - **Text states are capped** at 250 characters (`MAX_TEXT_LENGTH`), event strings at 1000.
 - **Scene trigger = transition.** The watcher checks at the start of every minute for programmes
@@ -97,7 +101,8 @@ src/scenes.js             scene trigger `programme_started` + scene action `get_
 ### Manifest
 
 `gladys-assistant-integration.json` declares the `channels` multi-select, the `test_guide` action,
-the widget and the scene declarations (`gladys_version >=5.1.0`). `test/manifest.test.js` keeps it
+the widget and the scene declarations, the catalog `categories`, `keywords` and `countries: ["FR"]`
+(`gladys_version >=5.3.0`, which `keywords` / `countries` require). `test/manifest.test.js` keeps it
 in sync with `DEFAULT_CONFIG`, `ACTIONS`, `CHANNELS` and the scene/widget keys. Change both sides
 together. The Release workflow rewrites the manifest with `jq`: run `npm run format` afterwards or
 CI fails on formatting.
